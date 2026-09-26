@@ -1,11 +1,11 @@
 ---
 name: "slide-forge"
-description: "Builds animated single-file HTML slide decks (story-first, theme previews, licensed images, render QA) and short cinematic MP4s with Remotion × three.js. Use for slides, decks, talks, スライド, プレゼン資料, 発表資料, 動画, 映像, ティザー."
+description: "アニメーション付きHTMLスライドと短い動画（Remotion×three.js）を作る最新版（v1.5）。データベース図・Excel出力画面のイメージ（新旧比較）も作れる。旧 slide-forge の代わりにこちらを使う。スライド・プレゼン資料・発表資料・ヒアリング資料・動画。"
 ---
 
 # Slide Forge — 伝わるアニメーション付き HTML スライド
 
-このスキルは手順書。実行に使うスクリプト・テーマ・ランタイム・映像の雛形・モーショングラフィック部品（v1.5）は、ユーザーの Artifact「Slide Forge」に 1 ファイルのバンドルとして保管してある。最初に必ず §S のセットアップで取り込む。
+このスキルは手順書。実行に使うスクリプト・テーマ・ランタイム・映像の雛形・モーショングラフィック部品（v1.5・68 ファイル）は、ユーザーの Artifact「Slide Forge」に 1 ファイルのバンドルとして保管してある。最初に必ず §S のセットアップで取り込む。
 
 ## S. セットアップ（毎セッション最初に 1 回）
 1. 既に取り込み済みか確認: `cat "$HOME/.cache/slide-forge-harness/.bundle-version" 2>/dev/null` が `1.5` 以上なら 3 へ（無い・古い場合は 2 で取り込み直す）。
@@ -80,7 +80,7 @@ python3 $SF/scripts/outline.py check outline.md     # ゴーストデッキ表�
 python3 $SF/scripts/themes.py preview --title "<実タイトル>" --subtitle "<実サブ>" \
   --points "<要点1>,<要点2>,<要点3>" --themes swiss,blueprint,signal --out previews/
 ```
-`previews/gallery.png` を見せて選んでもらう（安全枠 1＋用途向け 1＋意外性 1）。「〇〇風に」など参照先があるときは `$SF/references/resources.md` §1（Refero Styles・Minimal Gallery など）で雰囲気を確かめてから選ぶ。色だけ変えたい要望は deck-config の `tokens` で対応。
+`previews/gallery.png` を見せて選んでもらう（安全枠 1＋用途向け 1＋意外性 1）。各テーマの表紙は `previews/<theme>.png` にも保存される。「〇〇風に」など参照先があるときは `$SF/references/resources.md` §1（Refero Styles・Minimal Gallery など）で雰囲気を確かめてから選ぶ。色だけ変えたい要望は deck-config の `tokens` で対応。
 
 ### 4. ビジュアル調達
 `$SF/references/visuals.md` を読む。**入れるかどうかの判断が先**（抽象概念に雰囲気写真は置かない。写真は全体の 2〜3 割まで。アイコンは 1 セットに揃える）。画像担当エージェント（agents/slide-art-director.md）に任せてもよい。自分でやる場合（deck フォルダで実行）:
