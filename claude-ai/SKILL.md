@@ -26,7 +26,7 @@ description: "Builds animated single-file HTML slide decks (story-first, theme p
    print("restored", len(b["files"]), "files, version", b["version"])
    EOF
    ```
-   - Artifact ツールが使えない環境（Claude Code を自分の PC で使う場合など）は、ユーザーに `slide-forge.zip` の添付か、`install.sh` でのインストールを頼む。
+   - Artifact ツールが使えない環境（Claude Code を自分の PC で使う場合など）は、GitHub https://github.com/77nana77mizuki/slide-forge を clone して `install.sh` でインストールする。
 3. 以降 `SF="$HOME/.cache/slide-forge-harness/skills/slide-forge"`。スクリプトは `python3 $SF/scripts/<name>.py`（読まずに実行してよい。`--help` あり）。参照ドキュメントは `$SF/references/*.md`。
 4. 依存（無ければ入れる）: `python3 -c "import playwright, PIL" || pip install playwright pillow --break-system-packages`。Chromium: `PLAYWRIGHT_BROWSERS_PATH` に既にあれば不要、無ければ `python3 -m playwright install chromium`。Node/npm があればフォント・アイコンのオフライン取得に使われる（動画には必須）。
 5. 動作確認したいとき（任意・約 2 分）: `bash "$HOME/.cache/slide-forge-harness/tests/run_all.sh"` → 全項目 ✓ なら正常。
