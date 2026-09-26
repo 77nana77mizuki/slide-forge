@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Slide mockups: database diagrams (tables + relations) and spreadsheet export screens
-(Excel-style window with column letters, row numbers, old/new comparison, callouts).
+"""Slide mockups: database diagrams (tables + relations), spreadsheet export screens
+(Excel-style window with column letters, row numbers, old/new comparison, callouts), and
+web app / smartphone screens with annotation notes (data-mock="app", see mock_app.py).
 
 In a deck (preferred — build.py expands these, so the JSON stays the single source of truth):
     <div data-mock="er" data-src="db.json"></div>
@@ -432,7 +433,10 @@ def render(kind: str, spec: dict, attrs=None, base: Path = Path(".")) -> str:
         return render_er(spec, attrs)
     if kind == "sheet":
         return render_sheet(spec, attrs, base)
-    raise ValueError(f"unknown mock kind {kind!r} (er | sheet)")
+    if kind == "app":
+        import mock_app
+        return mock_app.render_app(spec, attrs, wrap)
+    raise ValueError(f"unknown mock kind {kind!r} (er | sheet | app)")
 
 
 def expand(body: str, src_dir: Path, warn) -> str:
@@ -468,7 +472,7 @@ def expand(body: str, src_dir: Path, warn) -> str:
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for k in ("er", "sheet"):
+    for k in ("er", "sheet", "app"):
         p = sub.add_parser(k)
         p.add_argument("spec")
         p.add_argument("-o", "--out")

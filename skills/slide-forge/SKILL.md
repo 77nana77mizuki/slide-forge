@@ -86,6 +86,7 @@ python3 $SF/scripts/outline.py scaffold outline.md -o deck.src.html   # 叩き�
 - 主役の動きを 1 つ決め、話す順に `data-step` を置く
 - `<aside class="notes">` に話す台詞
 - データベースの構造や、出力される Excel ファイルの見た目（新旧比較つき）を見せるなら `data-mock="er"` / `data-mock="sheet"` に JSON を書く（layouts.md §7、実例 `assets/examples/mock/`）。新旧の突き合わせと色分けは `diff` が自動で行う
+- Web アプリやスマホの画面イメージ（ブラウザの枠・メニュー・グラフや一覧のパネル）に、立場ごとの要望を引き出し線で重ねるなら `data-mock="app"`（layouts.md §8、実例 `assets/examples/mock/app.src.html`）
 完全な実例: `assets/examples/sample.src.html`（全レイアウト・全モーション）。
 ```bash
 python3 $SF/scripts/build.py deck.src.html              # → deck.html（単一ファイル）。静的 lint も表示
@@ -136,7 +137,7 @@ python3 $SF/scripts/video.py render film --out <name>.mp4            # 本番（
 - わざとはみ出す帯・背景演出 → `.bleed` の中に置く。ループ用の複製は `aria-hidden="true"`
 - 属性で足りない動き → Anime.js を最後の section の後ろに同梱し `deck:change` で再生（resources.md §5.4）。動く前の状態も破綻させない
 - 作業フォルダ → 絶対パスで作る（`~` はホームで、作業ディレクトリと違うことがある）
-- システムの画面・帳票・データ構造を見せたい → スクリーンショットの代わりに mock（`er` / `sheet`）で描く。文字が小さくなるなら 2 枚に分ける
+- システムの画面・帳票・データ構造を見せたい → スクリーンショットの代わりに mock（`er` / `sheet` / `app`）で描く。文字が小さくなるなら 2 枚に分ける
 
 ## ファイル
 | パス | 内容 | 読むタイミング |

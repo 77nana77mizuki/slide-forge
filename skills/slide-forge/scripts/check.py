@@ -136,6 +136,8 @@ MEASURE_JS = r"""
         add('warn', 'graphic-clipped', `graphic extends past the slide edge by ${Math.round(Math.max(q.right - S.right, q.bottom - S.bottom, S.left - q.left, S.top - q.top))}px – move it in or mark it .bleed`, g);
       for (const {el, rects} of blocks) {
         if (g.contains(el) || el.contains(g) || el.closest('.credit')) continue;
+        const mroot = g.closest('.mk-app, .mk-sheet, .mk-er');            // a mockup's own text, notes and callouts may sit on it
+        if (mroot && mroot.contains(el)) continue;
         if (rects.some(a => Math.min(a.right, q.right) - Math.max(a.left, q.left) > 6 && Math.min(a.bottom, q.bottom) - Math.max(a.top, q.top) > 6)) {
           add('error', 'text-over-graphic', `text "${el.textContent.trim().slice(0, 20)}" is covered by / collides with a graphic`, g); break; }
       }
@@ -150,7 +152,7 @@ MEASURE_JS = r"""
       const cs = getComputedStyle(el); const fs = parseFloat(cs.fontSize);
       const tag = el.textContent.trim().slice(0, 24);
       if (fs < MIN_ERR && !el.closest('.source, .credit')) add('error', 'tiny-text', `${fs}px text: "${tag}"`, el);
-      else if (fs < MIN_WARN && !el.closest('.source, .kicker, .tag, .label, .caption, figcaption, .credit, .credits, .mk-er, .mk-sheet')) add('warn', 'small-text', `${fs}px text: "${tag}"`, el);
+      else if (fs < MIN_WARN && !el.closest('.source, .kicker, .tag, .label, .caption, figcaption, .credit, .credits, .mk-er, .mk-sheet, .mk-device, .mk-w')) add('warn', 'small-text', `${fs}px text: "${tag}"`, el);
       if (cs.color === 'rgba(0, 0, 0, 0)' || cs.webkitTextFillColor === 'rgba(0, 0, 0, 0)') return;
       if (onImg(blocks.find(b => b.el === el).rects)) return;
       const fp = parse(cs.color); const bg = bgOf(el);

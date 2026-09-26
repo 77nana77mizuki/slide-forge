@@ -30,6 +30,9 @@ MK="$SF/assets/examples/mock"
 python3 "$SF/scripts/build.py" "$MK/mock.src.html" -o "$MK/mock.html" --fonts "$FONTS" 2>&1 | grep -q "warn\|✗" && { echo "✗ mock build warnings"; python3 "$SF/scripts/build.py" "$MK/mock.src.html" -o "$MK/mock.html" --fonts "$FONTS"; fail=1; }
 python3 "$SF/scripts/check.py" "$MK/mock.html" --out "$OUT/qa-mock" --no-shots | head -1 | grep -q " 0 errors" && echo "✓ mock deck" || { python3 "$SF/scripts/check.py" "$MK/mock.html" --out "$OUT/qa-mock" --no-shots | head -8; fail=1; }
 rm -f "$MK/mock.html"
+python3 "$SF/scripts/build.py" "$MK/app.src.html" -o "$MK/app.html" --fonts "$FONTS" >/dev/null 2>&1
+python3 "$SF/scripts/check.py" "$MK/app.html" --out "$OUT/qa-app" --no-shots | head -1 | grep -q " 0 errors" && echo "✓ web app deck" || { python3 "$SF/scripts/check.py" "$MK/app.html" --out "$OUT/qa-app" --no-shots | head -8; fail=1; }
+rm -f "$MK/app.html"
 python3 "$SF/scripts/mock.py" diff --old "$MK/data/old.csv" --new "$MK/data/new.csv" --key 部品ID -o "$OUT/diff.json" >/dev/null \
   && python3 -c "import json,sys; r=[x['status'] for x in json.load(open(sys.argv[1]))['rows']]; assert r==['upd','new','new','upd','same','del'], r" "$OUT/diff.json" \
   && echo "✓ diff (new/upd/del/same)" || { echo "✗ diff"; fail=1; }

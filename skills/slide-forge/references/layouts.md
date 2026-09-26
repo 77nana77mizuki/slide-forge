@@ -11,6 +11,7 @@
 5. 修飾クラス・トークン
 6. 独自レイアウトを作るとき（L-free）
 7. データベース図・表計算ソフトの画面イメージ（mock.py）
+8. Web アプリ・スマホの画面イメージ（mock.py の app）
 
 ---
 
@@ -238,3 +239,28 @@ flow のノードは 4 つまで（それ以上は 2 枚に分ける）。ノー
 - 2 つの画面の間の矢印は `.mk-arrow`（`<div class="mk-arrow"><i class="ico" data-icon="tabler:file-export"></i><b>エクスポート</b><p>…</p></div>`）
 - 1 枚に「データベース図＋矢印＋画面」を並べる全体像は `density: reading`（配布・ヒアリング資料）向け。発表なら図と画面を別スライドにして大きく見せる
 - 例データは必ず「（例）」と明記する（`.source`）
+
+## 8. Web アプリ・スマホの画面イメージ（`data-mock="app"`）
+Web アプリの提案・要件ヒアリングで「こんな画面になる」を見せ、周りに立場ごとの要望（管理者・利用者・クライアント）を重ねる部品。完全な実例: `assets/examples/mock/app.src.html`（全体像＋注記、プロジェクト画面＋吹き出し、スマホ、確認事項）。
+```html
+<script type="application/json" data-mock="app">
+{ "device": "browser", "font": 20, "brand": "#2563eb", "width": 36,
+  "url": "https://portal.example.com/dashboard", "tab": "業務ポータル - ダッシュボード",
+  "app": {"name": "業務ポータル", "logo": "業"},
+  "nav": [ {"icon": "tabler:home", "label": "概要", "active": true}, {"icon": "tabler:users", "label": "顧客"} ],
+  "title": "ダッシュボード", "actions": ["tabler:bell"], "user": "山田", "cols": 3,
+  "widgets": [
+    {"id": "kpi", "type": "kpi", "span": 3, "dark": true, "items": [ {"label": "売上", "value": "¥3,350万", "delta": "+12%"} ]},
+    {"id": "sales", "type": "line", "title": "売上推移", "span": 2, "labels": ["4月", "5月"], "series": [ {"values": [210, 340]} ]} ],
+  "notes": [ {"to": "kpi", "side": "left", "title": "管理者画面", "items": ["リアルタイム集計"]},
+             {"side": "right", "y": 2, "title": "利用者の声", "items": ["スマホでも使える"]} ],
+  "callouts": [ {"to": "sales", "text": "月ごとの推移", "side": "top", "step": 1} ] }
+</script>
+```
+- `device`: `browser`（タブ・アドレスバー・URL・ウィンドウボタン、左にメニュー `nav`、上にヘッダー）／`phone`（ノッチ・ステータスバー・下のタブ `nav`）。`sidebar`: `"dark"`（既定）/ `"light"` / `false`
+- `widgets` はグリッドに左上から詰めて置く（`cols` 列、`span` で横幅、`h` で高さ em、`row_break` で改行）。種類: `kpi`（数字の帯、`dark` で濃色）/ `line`（折れ線）/ `bars`（棒）/ `donut` / `list`（頭文字のアバター付き一覧）/ `progress` / `gantt`（`units`・`tasks`・`today`）/ `table` / `form` / `profile` / `text`
+- `notes`: 画面の左右に置く注記カード。`to` にパネルの `id` を書くと、そのパネルの端まで引き出し線を引く。`to` なしは `y`（em）で位置指定。`tone: "muted"` で黒い見出し。幅は文字数から自動（`gutter` で固定も可）。注記の色はデッキのテーマ、画面は常に明るいアプリ配色（`brand` がアプリの色）
+- `callouts`: `to` のパネルを指す吹き出し（`side`・`dx`・`dy`・`step` は sheet と同じ）
+- 人物は写真を使わず、頭文字の丸いアバターで表す。実在のサービス名・ロゴ・URL は使わない（URL は `example.com`）。数値は「（例）」と明記
+- 収まらないとき: パネルの `h` が足りないと check が `overflow`（clipped）を出す → `h` を増やすか行を減らす。画面が大きすぎて出典や本文とぶつかると `text-over-graphic`（画面の枠は solid 扱い）→ `width`・`h` を減らすか、出典を短くする。20px 未満の文字にはしない
+- 1 枚に「画面＋注記」を並べる全体像は `density: reading` 向け。発表では画面だけを大きくして `callouts` をクリックで出す

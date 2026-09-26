@@ -1,0 +1,132 @@
+<script type="application/json" id="deck-config">
+{
+  "title": "業務ポータル 要件ヒアリング（イメージ）",
+  "description": "Web アプリの画面イメージに、管理者・利用者・クライアントの要望を重ねたヒアリング資料",
+  "author": "Misao",
+  "lang": "ja",
+  "theme": "swiss",
+  "transition": "fade",
+  "footer": "要件ヒアリング資料（イメージ）",
+  "density": "reading",
+  "credits": "off"
+}
+</script>
+
+<style>
+  .center-mock { display: grid; place-items: center; }
+  .phone-side { display: grid; grid-template-columns: 1fr auto; gap: 80px; align-items: center; }
+</style>
+
+<!-- 1 ─ 全体像（添付イメージの再現） -->
+<section class="slide L-free">
+  <div class="head">
+    <div class="kicker" data-anim="fade">Hearing · Web アプリ</div>
+    <h2 class="headline" data-anim="up">画面イメージに、立場ごとの要望を重ねて確認する</h2>
+  </div>
+  <div class="center-mock grow">
+    <script type="application/json" data-mock="app">
+    { "device": "browser", "font": 20, "brand": "#2563eb", "width": 36,
+      "url": "https://portal.example.com/dashboard", "tab": "業務ポータル - ダッシュボード",
+      "app": {"name": "業務ポータル", "logo": "業"},
+      "nav": [ {"icon": "tabler:home", "label": "概要", "active": true}, {"icon": "tabler:folder", "label": "プロジェクト"},
+               {"icon": "tabler:users", "label": "顧客"}, {"icon": "tabler:chart-bar", "label": "レポート"}, {"icon": "tabler:settings", "label": "設定"} ],
+      "title": "ダッシュボード", "actions": ["tabler:help-circle", "tabler:bell"], "user": "山田",
+      "cols": 3,
+      "widgets": [
+        {"id": "kpi", "type": "kpi", "span": 3, "h": 5.6, "dark": true,
+         "items": [ {"label": "売上", "value": "¥3,350万", "delta": "+12%"}, {"label": "ユーザー数", "value": "22,670"}, {"label": "稼働率", "value": "81%"} ]},
+        {"id": "cust", "type": "list", "title": "顧客", "h": 8.2,
+         "rows": [ {"name": "相馬 健太", "sub": "製造部"}, {"name": "佐田 美咲", "sub": "営業部"} ]},
+        {"id": "sales", "type": "line", "title": "売上推移", "span": 2, "h": 8.2,
+         "labels": ["4月", "5月", "6月", "7月", "8月", "9月"], "series": [ {"values": [210, 340, 300, 520, 480, 690]} ]},
+        {"id": "gantt", "type": "gantt", "title": "プロジェクト", "span": 2, "h": 8.6, "units": ["4月", "5月", "6月", "7月", "8月", "9月"], "today": 4.3,
+         "tasks": [ {"name": "要件定義", "start": 0, "len": 2, "done": 100}, {"name": "設計", "start": 1.5, "len": 2.5, "done": 70}, {"name": "開発", "start": 3, "len": 3, "done": 25} ]},
+        {"id": "act", "type": "progress", "title": "進捗", "h": 8.6,
+         "rows": [ {"label": "設計", "value": 70}, {"label": "開発", "value": 25}, {"label": "試験", "value": 5} ]}
+      ],
+      "notes": [
+        {"to": "kpi",   "side": "left",  "title": "管理者画面",       "items": ["リアルタイム集計"]},
+        {"to": "cust",  "side": "left",  "title": "顧客データベース", "items": ["詳細検索と履歴管理"]},
+        {"to": "gantt", "side": "left",  "title": "プロジェクト管理", "items": ["ガントと期限通知"]},
+        {"side": "right", "y": 2, "title": "利用者の声", "items": ["直感的に操作できる", "スマホでも使える", "すぐ問い合わせできる"]},
+        {"side": "right", "y": 14, "title": "クライアント要求", "tone": "muted", "items": ["セキュリティ強化", "多言語対応", "外部 API 連携"]}
+      ] }
+    </script>
+  </div>
+  <p class="source">画面・数値は例です（例）</p>
+  <aside class="notes">左が機能ごとの要望、右が利用者とクライアントの要望。この画面を見ながら、足りない機能や優先度を聞いていく。</aside>
+</section>
+
+<!-- 2 ─ プロジェクト管理を大きく -->
+<section class="slide L-free">
+  <div class="head">
+    <div class="kicker" data-anim="fade">Project</div>
+    <h2 class="headline" data-anim="up">遅れと期限が、一目でわかる画面にする</h2>
+  </div>
+  <div class="center-mock grow">
+    <script type="application/json" data-mock="app">
+    { "device": "browser", "font": 22, "brand": "#2563eb", "width": 52, "sidebar": false,
+      "url": "https://portal.example.com/projects/42", "tab": "業務ポータル - プロジェクト",
+      "app": {"name": "業務ポータル", "logo": "業"}, "title": "新基幹システム導入", "actions": ["tabler:bell"], "user": "山田",
+      "cols": 3,
+      "widgets": [
+        {"id": "g", "type": "gantt", "title": "スケジュール", "span": 3, "h": 10, "units": ["4月", "5月", "6月", "7月", "8月", "9月"], "today": 4.3,
+         "tasks": [ {"name": "要件定義", "start": 0, "len": 2, "done": 100}, {"name": "基本設計", "start": 1.5, "len": 2, "done": 100},
+                    {"name": "詳細設計", "start": 3, "len": 1.8, "done": 60}, {"name": "開発", "start": 3.8, "len": 2.2, "done": 15} ]},
+        {"id": "due", "type": "list", "title": "期限が近いタスク", "span": 2, "h": 7.4,
+         "rows": [ {"name": "詳細設計レビュー", "sub": "担当: 佐田", "badge": "あと 3 日"}, {"name": "テスト計画書", "sub": "担当: 井上", "badge": "あと 5 日"} ]},
+        {"id": "p", "type": "progress", "title": "全体の進捗", "h": 7.4, "rows": [ {"label": "設計", "value": 80}, {"label": "開発", "value": 15} ]}
+      ],
+      "callouts": [
+        {"to": "g", "text": "今日の位置を赤線で表示", "side": "top", "dx": 12, "step": 1},
+        {"to": "due", "text": "期限 3 日前に自動で通知", "side": "top", "dx": 6, "step": 2}
+      ] }
+    </script>
+  </div>
+  <p class="source">画面・名称・日付はすべて説明用の例です（例）</p>
+  <aside class="notes">クリック 1 回目で今日の線、2 回目で期限通知。「通知はメールか、チャットか」をここで聞く。</aside>
+</section>
+
+<!-- 3 ─ スマホ対応 -->
+<section class="slide L-free">
+  <div class="head">
+    <div class="kicker" data-anim="fade">Mobile</div>
+    <h2 class="headline" data-anim="up">スマホでは「見る・答える」に絞り、入力は PC に任せる</h2>
+  </div>
+  <div class="phone-side grow">
+    <ul class="points" data-stagger="up">
+      <li>見る：今日のタスクと期限<span class="sub">開いてすぐ、やることが分かる</span></li>
+      <li>答える：通知から 1 タップで返信<span class="sub">問い合わせもその場で送れる</span></li>
+      <li>PC で：登録・集計・設定<span class="sub">入力の多い作業は大きな画面で</span></li>
+    </ul>
+    <script type="application/json" data-mock="app">
+    { "device": "phone", "font": 20, "brand": "#2563eb",
+      "app": {"name": "業務ポータル", "logo": "業"}, "title": "ホーム", "actions": ["tabler:bell"],
+      "nav": [ {"icon": "tabler:home", "active": true}, {"icon": "tabler:folder"}, {"icon": "tabler:message-circle"}, {"icon": "tabler:user"} ],
+      "widgets": [
+        {"id": "k", "type": "kpi", "h": 4.6, "dark": true, "items": [ {"label": "今日のタスク", "value": "5"}, {"label": "未読", "value": "2"} ]},
+        {"id": "l", "type": "list", "title": "期限が近い", "h": 7.2,
+         "rows": [ {"name": "設計レビュー", "sub": "あと 3 日"}, {"name": "テスト計画", "sub": "あと 5 日"} ]}
+      ] }
+    </script>
+  </div>
+  <p class="source">画面・名称はすべて説明用の例です（例）</p>
+  <aside class="notes">利用者の声「スマホでも使える」への答え。何をスマホでできればよいかを確認する。</aside>
+</section>
+
+<!-- 4 ─ 確認したいこと -->
+<section class="slide L-bullets">
+  <div class="head">
+    <div class="kicker" data-anim="fade">Questions</div>
+    <h2 class="headline" data-anim="up">次回までに、4 点を決めさせてください</h2>
+  </div>
+  <div class="body">
+    <ol class="points numbered" data-stagger="up">
+      <li>ダッシュボードで最初に見たい数字は何ですか<span class="sub">売上・利用者数・稼働率のうち、どれを一番上に置くか</span></li>
+      <li>期限の通知はどこに届けばよいですか<span class="sub">メール／チャット／アプリ内のみ</span></li>
+      <li>スマホで必ずできてほしいことは何ですか<span class="sub">閲覧だけか、承認や入力も含めるか</span></li>
+      <li>連携したい外部サービスはありますか<span class="sub">会計・勤怠・チャットなど</span></li>
+    </ol>
+  </div>
+  <aside class="notes">ヒアリングで決めたいこと。</aside>
+</section>

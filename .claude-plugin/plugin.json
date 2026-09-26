@@ -1,6 +1,6 @@
 {
   "name": "slide-forge",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "アニメーション付きの単一ファイルHTMLスライドを、構成設計→テーマ選定→制作→自動QA→独立レビューの流れで作るハーネス（スキル＋エージェント＋スクリプト）",
   "author": {
     "name": "Misao"
