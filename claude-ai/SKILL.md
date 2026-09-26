@@ -161,4 +161,4 @@ python3 $SF/scripts/video.py render film --out <name>.mp4   # 本番 1080p。out
 - 作業フォルダ → 絶対パスで作る（`$HOME` は /root で、作業ディレクトリと違う）
 
 ## ハーネスを改良したとき
-スクリプトやテーマを直したら `tests/run_all.sh` を通し、`version` を上げて（S.1 の比較値も合わせる）、`$HOME/.cache/slide-forge-harness` 全体から同じ形式（{"name","version","created","files":{相対パス: 内容}}）の `sf-bundle.json` を作り直して、Artifact https://claude.ai/artifact/9CFsHfVZEqW7TsjNfgWfCC に `url` 指定で `files: {"bundle/sf-bundle.json": ...}` として再公開する（ページ本体は read で取得した最新版を使う）。個別ファイル `harness/...` も同時に更新しておくと閲覧しやすい。
+スクリプトやテーマを直したら `tests/run_all.sh` を通し、`version` を上げて（S.1 の比較値も合わせる）、`$HOME/.cache/slide-forge-harness` 全体から同じ形式（{"name","version","created","files":{相対パス: 内容}}）の `sf-bundle.json` を作り直して、Artifact https://claude.ai/artifact/9CFsHfVZEqW7TsjNfgWfCC に `url` 指定で `files: {"bundle/sf-bundle.json": ...}` として再公開する（ページ本体は read で取得した最新版を使う）。個別ファイル `harness/...` も同時に更新しておくと閲覧しやすい（`.py` などは `{"from": …, "contentType": "text/plain"}` で渡す）。ソースは GitHub https://github.com/77nana77mizuki/slide-forge にもあるので、同じ変更をコミットしてプッシュする（この起動版は `claude-ai/SKILL.md`）。
