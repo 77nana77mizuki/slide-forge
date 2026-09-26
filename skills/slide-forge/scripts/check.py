@@ -150,7 +150,7 @@ MEASURE_JS = r"""
       const cs = getComputedStyle(el); const fs = parseFloat(cs.fontSize);
       const tag = el.textContent.trim().slice(0, 24);
       if (fs < MIN_ERR && !el.closest('.source, .credit')) add('error', 'tiny-text', `${fs}px text: "${tag}"`, el);
-      else if (fs < MIN_WARN && !el.closest('.source, .kicker, .tag, .label, .caption, figcaption, .credit, .credits')) add('warn', 'small-text', `${fs}px text: "${tag}"`, el);
+      else if (fs < MIN_WARN && !el.closest('.source, .kicker, .tag, .label, .caption, figcaption, .credit, .credits, .mk-er, .mk-sheet')) add('warn', 'small-text', `${fs}px text: "${tag}"`, el);
       if (cs.color === 'rgba(0, 0, 0, 0)' || cs.webkitTextFillColor === 'rgba(0, 0, 0, 0)') return;
       if (onImg(blocks.find(b => b.el === el).rects)) return;
       const fp = parse(cs.color); const bg = bgOf(el);

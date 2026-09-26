@@ -1,0 +1,103 @@
+{
+ "font": 22,
+ "gap": 1.8,
+ "entities": [
+  {
+   "id": "parts",
+   "name": "部品マスター",
+   "sub": "Parts Master",
+   "icon": "tabler:settings",
+   "cols": [
+    "部品ID",
+    "部品名",
+    "最終更新日時"
+   ],
+   "pk": [
+    "部品ID"
+   ],
+   "rows": [
+    [
+     "P001",
+     "Gear A",
+     "2026-09-01"
+    ],
+    [
+     "P002",
+     "Bracket X",
+     "2026-09-20"
+    ]
+   ]
+  },
+  {
+   "id": "conn",
+   "name": "コネクタ",
+   "sub": "Connectors",
+   "icon": "tabler:plug-connected",
+   "cols": [
+    "部品ID",
+    "コネクタID",
+    "ピン数"
+   ],
+   "pk": [
+    "コネクタID"
+   ],
+   "fk": [
+    "部品ID"
+   ],
+   "rows": [
+    [
+     "P001",
+     "C10",
+     "12"
+    ],
+    [
+     "P002",
+     "C20",
+     "8"
+    ]
+   ]
+  },
+  {
+   "id": "term",
+   "name": "端子",
+   "sub": "Terminals",
+   "icon": "tabler:bolt",
+   "cols": [
+    "コネクタID",
+    "端子ID",
+    "材質"
+   ],
+   "pk": [
+    "端子ID"
+   ],
+   "fk": [
+    "コネクタID"
+   ],
+   "rows": [
+    [
+     "C10",
+     "T1",
+     "Copper"
+    ],
+    [
+     "C20",
+     "T2",
+     "Steel"
+    ]
+   ]
+  }
+ ],
+ "links": [
+  {
+   "from": "parts",
+   "to": "conn",
+   "label": "1 : N"
+  },
+  {
+   "from": "conn",
+   "to": "term",
+   "label": "1 : N"
+  }
+ ],
+ "layout": "row"
+}

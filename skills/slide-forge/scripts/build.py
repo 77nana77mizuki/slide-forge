@@ -34,6 +34,7 @@ THEMES = SKILL / "assets" / "themes"
 sys.path.insert(0, str(HERE))
 import fonts as F  # noqa: E402
 import assets as A  # noqa: E402
+import mock as MK  # noqa: E402
 
 LAYOUTS = {"L-credits", "L-title", "L-section", "L-statement", "L-bullets", "L-split", "L-cards", "L-stats", "L-compare",
            "L-quote", "L-image", "L-closing", "L-chart", "L-timeline", "L-flow", "L-code", "L-table", "L-agenda", "L-free"}
@@ -255,6 +256,7 @@ def build(src_path: Path, out: Path | None, theme: str | None, font_mode: str, i
     theme_css = tpath.read_text(encoding="utf-8")
 
     warns: list[str] = []
+    body = MK.expand(body, src_path.parent, warns.append)          # data-mock="er|sheet" → HTML (before icons are resolved)
     body = apply_assets(body, src_path.parent, cfg, warns.append, extra_refs=deck_css)
     if inline:
         body = inline_images(body, src_path.parent, warns.append)

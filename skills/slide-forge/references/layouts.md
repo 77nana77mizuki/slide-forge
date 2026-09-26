@@ -10,6 +10,7 @@
 4. コンポーネント（points / cards / stats / bars / donut / timeline / flow / compare / quote / code / table）
 5. 修飾クラス・トークン
 6. 独自レイアウトを作るとき（L-free）
+7. データベース図・表計算ソフトの画面イメージ（mock.py）
 
 ---
 
@@ -194,3 +195,46 @@ flow のノードは 4 つまで（それ以上は 2 枚に分ける）。ノー
 - **わざとはみ出す帯・背景演出**（流れる帯、流れ星、波紋）は、はみ出す要素を `.bleed` の中に置く（check の clip 判定から外れる）。ループ用に複製した中身には `aria-hidden="true"`（文字量の判定から外れる）。一覧として読ませない文字の塊は `data-density-skip`
 - 小さい画像（原寸 300px 未満のアイコンなど）は原寸の 1.2 倍までで表示する（`low-res` 警告）
 - 表紙の装飾アイコンは見出しの右端から十分離す（`text-over-graphic`）。長い見出しは最終行の句点まで伸びる
+
+## 7. データベース図・表計算ソフトの画面イメージ（mock.py）
+システム提案・ヒアリング・設計レビューで「元のデータ構造」と「出力されるファイルの見た目」を見せる部品。完全な実例: `assets/examples/mock/mock.src.html`（全体像・テーブル構造・出力ファイル・確認事項の 4 枚）。
+
+**書き方**: デッキに JSON を置くだけで build が HTML に展開する（JSON が唯一の元データ。手で HTML を書かない）。
+```html
+<div data-mock="er" data-src="data/db.json"></div>                       <!-- ファイルから -->
+<script type="application/json" data-mock="sheet">{ … }</script>          <!-- デッキ内に直接 -->
+```
+プレースホルダーに書いた `class` `style` `data-anim` `data-delay` `data-step` は生成物に引き継がれる。
+
+### 7.1 データベース図（`er`）
+```json
+{ "font": 22, "layout": "row",
+  "entities": [
+    {"id": "parts", "name": "部品マスター", "sub": "Parts Master", "icon": "tabler:settings",
+     "cols": ["部品ID", "部品名", "最終更新日時"], "pk": ["部品ID"], "rows": [["P001", "Gear A", "2026-09-01"]]},
+    {"id": "conn", "name": "コネクタ", "cols": ["部品ID", "コネクタID"], "pk": ["コネクタID"], "fk": ["部品ID"]} ],
+  "links": [ {"from": "parts", "to": "conn", "label": "1 : N"} ] }
+```
+- `layout`: 既定は縦積み（`level` で字下げ）。横長のスライドでは `"row"`（左→右）が収まりやすい
+- `rows`: 省略で「…」の 1 行、`[]` で見出し行だけ（全体像の図を小さくしたいとき）、値を入れると例データ
+- 線は自動で引く（縦積み＝上下、横並び＝左右、`"style": "side"` で左の幹から枝分かれ）。矢印は線が描かれるアニメーション付き
+- `x` `y` `w` を em で書けば位置と幅を固定できる
+
+### 7.2 表計算ソフトの画面（`sheet`）— 新旧比較は `diff` に任せる
+```json
+{ "font": 22, "title": "comparison_export.xlsx", "blank": 1,
+  "diff": { "key": "部品ID", "cols": ["部品名", "端子材質"], "old_csv": "data/old.csv", "new_csv": "data/new.csv" },
+  "callouts": [ {"at": "K3", "text": "変更は赤で強調", "side": "right", "step": 1} ] }
+```
+- `diff` を書くと、旧・新の突き合わせ（新規／更新／削除／変化なし）、旧データ（グレー）と新データ（グリーン）の帯、差分の記号、変わったセルの赤い強調まで自動で作る。`old`/`new` に配列で直接書いてもよい。`"layout": "pairs"` で項目ごとに旧・新を隣り合わせ、`"only_changes": true` で変化なしの行を出さない
+- 自由な表は `columns`（`name`・`w`・`tone`: old/new/accent・`type`: marker）と `rows`（`status`: new/upd/del/same、セルは `{"v": …, "cls": "chg"}`）と `bands`（`from`/`to` は列記号）で書く
+- `callouts`: `at` は画面上のセル番地（列記号＋行番号。行番号は画面の左端に出る番号）。`side` は top/bottom/left/right、`dx`/`dy` で em 単位の微調整、`step` で 1 クリックずつ出す。指したセルには枠が付く
+- 画面は常に明るい配色（デスクトップアプリの絵なので、ダークテーマでも白い画面）。マイクロソフトのロゴは使わず、汎用の表アイコンと緑のタイトルバーで表現している
+- CLI: `mock.py diff --old old.csv --new new.csv --key 部品ID -o sheet.json` で比較結果を JSON に書き出せる（中身の確認や手直しに）
+
+### 7.3 大きさと配置
+- 寸法はすべて mock の文字サイズ（`font`、既定 24px）基準。**20px 未満にはしない**（check が tiny-text エラー）。収まらないときは列・行を減らすか、全体像（小さく）と詳細（大きく）の 2 枚に分ける
+- 列幅は全テーマのフォントで実測した最大の字幅から計算するので、通常ははみ出さない。はみ出したら check が `overflow`（clipped）を出す → その列に `"w"`（em）を指定
+- 2 つの画面の間の矢印は `.mk-arrow`（`<div class="mk-arrow"><i class="ico" data-icon="tabler:file-export"></i><b>エクスポート</b><p>…</p></div>`）
+- 1 枚に「データベース図＋矢印＋画面」を並べる全体像は `density: reading`（配布・ヒアリング資料）向け。発表なら図と画面を別スライドにして大きく見せる
+- 例データは必ず「（例）」と明記する（`.source`）

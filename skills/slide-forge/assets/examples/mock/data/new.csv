@@ -1,0 +1,6 @@
+部品ID,部品名,コネクタID,端子ID,端子材質
+P001,Gear A+,C10,T1,Copper
+P002,Bracket X,C20,T2,Steel
+P003,Plate Y,C20,T2,Steel
+P004,Hinge B,C30,T3,Steel
+P006,Cover K,C50,T5,Steel

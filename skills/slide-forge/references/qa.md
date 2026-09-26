@@ -41,6 +41,7 @@ build.py → check.py → (エラーあり) 直す → build.py → check.py …
 | build の「non-commercial」 | NC ライセンス画像 | 業務・社外利用なら差し替え |
 | `font-fallback` | Web フォント未読込 | オフライン環境なら `build.py --fonts embed` |
 | `js-error` | スクリプトエラー | デッキ CSS/HTML の書き間違い、`data-*` の値を確認 |
+| build の「mock …」 | data-mock の JSON が読めない・セル番地が画面の外 | JSON の書式、`data-src` のパス、`callouts.at`（列記号＋画面の行番号）を確認 |
 | build の「N build steps」 | クリック数が多すぎ（同じ `data-step="n"` は 1 クリックとして数える） | 分割する。矢印とノードを同時に出すなら同じ番号を付ける |
 
 目視で見つかりやすく、自動では拾えない不具合（2026-09 のセッションで実際に出たもの）:

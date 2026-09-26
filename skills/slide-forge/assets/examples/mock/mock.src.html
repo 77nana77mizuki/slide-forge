@@ -1,0 +1,115 @@
+<script type="application/json" id="deck-config">
+{
+  "title": "部品・コネクタ・端子データの新旧比較エクスポート（ヒアリング資料）",
+  "description": "リレーションを持つデータベースから、新旧比較つきの Excel ファイルを出力するイメージ",
+  "author": "Misao",
+  "lang": "ja",
+  "theme": "blueprint",
+  "transition": "fade",
+  "footer": "ヒアリング資料（イメージ）",
+  "density": "reading",
+  "credits": "off"
+}
+</script>
+
+<style>
+  .ov { display: grid; grid-template-columns: auto 210px auto; gap: 28px; align-items: start; justify-content: space-between; }
+  .ov-cap { font-size: 26px; font-weight: 700; margin: 0 0 14px; }
+  .ov .mk-arrow { align-self: center; }
+  .ov-merit { margin-top: 16px; padding: 16px 24px; }
+  .ov-merit h3 { font-size: 26px; margin: 0 0 6px; }
+  .ov-merit ul { margin: 0; padding: 0; list-style: none; font-size: 24px; line-height: 1.6; }
+  .ov-merit li::before { content: "・"; color: var(--accent-ink); }
+  .er-stack { display: flex; flex-direction: column; gap: 56px; align-items: center; justify-content: center; }
+  .er-notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; width: 100%; }
+  .er-notes h3 { font-size: 32px; margin: 0 0 8px; } .er-notes p { font-size: 26px; color: var(--muted); margin: 0; line-height: 1.55; }
+  .sheet-wrap { display: grid; place-items: center start; }
+</style>
+
+<!-- 1 ─ 全体像（添付イメージの再現） -->
+<section class="slide L-free">
+  <div class="head">
+    <div class="kicker" data-anim="fade">Hearing · イメージ</div>
+    <h2 class="headline" data-anim="up">関連データを、新旧比較つき Excel 1 枚に</h2>
+  </div>
+  <div class="ov grow">
+    <div>
+      <p class="ov-cap" data-anim="fade">元のデータベース（リレーション構造）</p>
+      <div data-mock="er" data-src="data/db.json"></div>
+      <div class="card ov-merit" data-anim="up" data-delay="1400">
+      <h3>お客様へのメリット</h3>
+      <ul><li>複雑な関連データを 1 枚で一覧</li><li>変更箇所を自動で判別し、比較の手間を削減</li></ul>
+    </div>
+    </div>
+    <div class="mk-arrow" data-anim="fade" data-delay="900">
+      <i class="ico" data-icon="tabler:file-export"></i>
+      <b>エクスポート</b>
+      <p>指定した条件で<br>関連する「新」「旧」<br>データを抽出</p>
+    </div>
+    <div>
+      <p class="ov-cap" data-anim="fade" data-delay="600">生成されるファイル（Excel 形式）</p>
+      <script type="application/json" data-mock="sheet" data-anim="fade" data-delay="700">
+      { "font": 20, "title": "comparison_export.xlsx", "blank": 1, "anim": false,
+        "diff": { "key": "部品ID", "cols": ["部品名", "端子材質"], "old_csv": "data/old.csv", "new_csv": "data/new.csv" },
+        "callouts": [ {"at": "F8", "text": "変わった値・追加・削除が一目でわかる", "side": "bottom", "dx": -1.5} ] }
+      </script>
+    </div>
+  </div>
+  <p class="source">データはすべて説明用の例です（例）</p>
+  <aside class="notes">添付のイメージを 1 枚で再現。左がデータベース、右が出力ファイル。詳細は次の 2 枚で。</aside>
+</section>
+
+<!-- 2 ─ データベースの構造 -->
+<section class="slide L-free">
+  <div class="head">
+    <div class="kicker" data-anim="fade">Database</div>
+    <h2 class="headline" data-anim="up">元データは 3 階層：部品 → コネクタ → 端子が、それぞれ 1 対多でつながる</h2>
+  </div>
+  <div class="er-stack grow">
+    <div data-mock="er" data-src="data/db-detail.json"></div>
+    <div class="er-notes" data-stagger="up">
+      <div><h3>部品マスター</h3><p>部品 ID（PK）で識別し、名称と最終更新日時を持つ</p></div>
+      <div><h3>コネクタ</h3><p>部品 ID（FK）で部品に紐づく。1 部品に複数</p></div>
+      <div><h3>端子</h3><p>コネクタ ID（FK）で紐づき、材質を持つ</p></div>
+    </div>
+  </div>
+  <p class="source">テーブル名・項目・値は説明用の例です（例）</p>
+  <aside class="notes">PK は主キー、FK は外部キー。この 3 表を結合して 1 行にするのがエクスポートの中身。</aside>
+</section>
+
+<!-- 3 ─ 出力ファイル（全項目） -->
+<section class="slide L-free">
+  <div class="head">
+    <div class="kicker" data-anim="fade">Export</div>
+    <h2 class="headline" data-anim="up">旧データと新データを左右に並べ、変わった所だけが目に入る</h2>
+  </div>
+  <div class="sheet-wrap grow">
+    <script type="application/json" data-mock="sheet">
+    { "font": 22, "title": "comparison_export.xlsx", "blank": 1,
+      "diff": { "key": "部品ID", "old_csv": "data/old.csv", "new_csv": "data/new.csv" },
+      "callouts": [ {"at": "D1", "text": "旧データはグレー", "side": "top", "step": 1},
+                    {"at": "I1", "text": "新データはグリーン", "side": "top", "step": 2},
+                    {"at": "K3", "text": "変更は赤で強調", "side": "right", "step": 3},
+                    {"at": "G8", "text": "追加・変更・削除を記号で", "side": "bottom", "step": 4} ] }
+    </script>
+  </div>
+  <p class="source">データは説明用の例です（例）</p>
+  <aside class="notes">クリックごとに吹き出しが出る。①旧 ②新 ③変更セル ④記号。</aside>
+</section>
+
+<!-- 4 ─ 確認したいこと -->
+<section class="slide L-bullets">
+  <div class="head">
+    <div class="kicker" data-anim="fade">Questions</div>
+    <h2 class="headline" data-anim="up">この形で進めるために、4 点を確認させてください</h2>
+  </div>
+  <div class="body">
+    <ol class="points numbered" data-stagger="up">
+      <li>「旧」は何と比べますか<span class="sub">前回出力時点／特定の版数／指定日時</span></li>
+      <li>1 行の単位はどこですか<span class="sub">部品ごと／コネクタごと／端子ごと</span></li>
+      <li>変わっていない行も出しますか<span class="sub">全件出力か、変更分だけか</span></li>
+      <li>比較する項目はどれですか<span class="sub">名称・材質のほか、ピン数や更新日時も含めるか</span></li>
+    </ol>
+  </div>
+  <aside class="notes">ヒアリングで決めたいこと。答えによって出力の形が変わる。</aside>
+</section>

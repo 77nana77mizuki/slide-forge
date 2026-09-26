@@ -85,6 +85,7 @@ python3 $SF/scripts/outline.py scaffold outline.md -o deck.src.html   # 叩き�
 - 内容に最適なレイアウト・コンポーネントを選び直す（数字→stats、対比→compare、手順→flow/timeline、言い切り→statement）
 - 主役の動きを 1 つ決め、話す順に `data-step` を置く
 - `<aside class="notes">` に話す台詞
+- データベースの構造や、出力される Excel ファイルの見た目（新旧比較つき）を見せるなら `data-mock="er"` / `data-mock="sheet"` に JSON を書く（layouts.md §7、実例 `assets/examples/mock/`）。新旧の突き合わせと色分けは `diff` が自動で行う
 完全な実例: `assets/examples/sample.src.html`（全レイアウト・全モーション）。
 ```bash
 python3 $SF/scripts/build.py deck.src.html              # → deck.html（単一ファイル）。静的 lint も表示
@@ -135,6 +136,7 @@ python3 $SF/scripts/video.py render film --out <name>.mp4            # 本番（
 - わざとはみ出す帯・背景演出 → `.bleed` の中に置く。ループ用の複製は `aria-hidden="true"`
 - 属性で足りない動き → Anime.js を最後の section の後ろに同梱し `deck:change` で再生（resources.md §5.4）。動く前の状態も破綻させない
 - 作業フォルダ → 絶対パスで作る（`~` はホームで、作業ディレクトリと違うことがある）
+- システムの画面・帳票・データ構造を見せたい → スクリーンショットの代わりに mock（`er` / `sheet`）で描く。文字が小さくなるなら 2 枚に分ける
 
 ## ファイル
 | パス | 内容 | 読むタイミング |
@@ -153,4 +155,4 @@ python3 $SF/scripts/video.py render film --out <name>.mp4            # 本番（
 | assets/runtime/ | ランタイム（build が自動で同梱。通常は触らない） | — |
 | assets/themes/*.css | 7 テーマ | 独自テーマ作成時 |
 | assets/video-template/ | 動画の雛形（Remotion プロジェクト・太陽系とモーションの storyboard 例） | 動画（video.py new が複製） |
-| scripts/ | outline / themes / assets / build / check / export / record / extract_pptx / fonts / video | 実行する |
+| scripts/ | outline / themes / assets / build / check / export / record / extract_pptx / fonts / video / mock | 実行する |

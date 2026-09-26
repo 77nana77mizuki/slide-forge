@@ -1,0 +1,72 @@
+{
+ "font": 20,
+ "gap": 0.9,
+ "entities": [
+  {
+   "id": "parts",
+   "name": "部品マスター",
+   "sub": "Parts Master",
+   "icon": "tabler:settings",
+   "cols": [
+    "部品ID",
+    "部品名",
+    "最終更新日時"
+   ],
+   "pk": [
+    "部品ID"
+   ],
+   "level": 0,
+   "rows": []
+  },
+  {
+   "id": "conn",
+   "name": "コネクタ",
+   "sub": "Connectors",
+   "icon": "tabler:plug-connected",
+   "cols": [
+    "部品ID",
+    "コネクタID",
+    "ピン数"
+   ],
+   "pk": [
+    "コネクタID"
+   ],
+   "fk": [
+    "部品ID"
+   ],
+   "level": 1,
+   "rows": []
+  },
+  {
+   "id": "term",
+   "name": "端子",
+   "sub": "Terminals",
+   "icon": "tabler:bolt",
+   "cols": [
+    "コネクタID",
+    "端子ID",
+    "材質"
+   ],
+   "pk": [
+    "端子ID"
+   ],
+   "fk": [
+    "コネクタID"
+   ],
+   "level": 1,
+   "rows": []
+  }
+ ],
+ "links": [
+  {
+   "from": "parts",
+   "to": "conn",
+   "label": "1 : N"
+  },
+  {
+   "from": "conn",
+   "to": "term",
+   "label": "1 : N"
+  }
+ ]
+}

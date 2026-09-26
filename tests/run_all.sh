@@ -25,6 +25,14 @@ echo "== visuals (images, icons, credits) =="
 python3 "$ROOT/tests/test_visuals.py" "$OUT/visuals" | tail -1 | grep -q "0 failed" && echo "✓ visuals" || { python3 "$ROOT/tests/test_visuals.py" "$OUT/visuals2" | grep FAIL; fail=1; }
 echo "== video (Remotion × three.js) =="
 python3 "$ROOT/tests/test_video.py" "$OUT/video" > "$OUT/video.log" 2>&1; tail -1 "$OUT/video.log" | grep -q " 0 failed" && echo "✓ video ($(tail -1 "$OUT/video.log"))" || { grep -E "FAIL|SKIP" "$OUT/video.log"; fail=1; }
+echo "== mockups (DB diagram + spreadsheet export) =="
+MK="$SF/assets/examples/mock"
+python3 "$SF/scripts/build.py" "$MK/mock.src.html" -o "$MK/mock.html" --fonts "$FONTS" 2>&1 | grep -q "warn\|✗" && { echo "✗ mock build warnings"; python3 "$SF/scripts/build.py" "$MK/mock.src.html" -o "$MK/mock.html" --fonts "$FONTS"; fail=1; }
+python3 "$SF/scripts/check.py" "$MK/mock.html" --out "$OUT/qa-mock" --no-shots | head -1 | grep -q " 0 errors" && echo "✓ mock deck" || { python3 "$SF/scripts/check.py" "$MK/mock.html" --out "$OUT/qa-mock" --no-shots | head -8; fail=1; }
+rm -f "$MK/mock.html"
+python3 "$SF/scripts/mock.py" diff --old "$MK/data/old.csv" --new "$MK/data/new.csv" --key 部品ID -o "$OUT/diff.json" >/dev/null \
+  && python3 -c "import json,sys; r=[x['status'] for x in json.load(open(sys.argv[1]))['rows']]; assert r==['upd','new','new','upd','same','del'], r" "$OUT/diff.json" \
+  && echo "✓ diff (new/upd/del/same)" || { echo "✗ diff"; fail=1; }
 echo "== exports =="
 python3 "$SF/scripts/export.py" "$OUT/washi.html" --pdf "$OUT/washi.pdf" | grep -q "16 pages" && echo "✓ pdf" || { echo "✗ pdf"; fail=1; }
 exit $fail
