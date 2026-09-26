@@ -1,0 +1,139 @@
+{
+  "title": "NASA の画像で旅する太陽系",
+  "theme": "signal",
+  "lang": "ja",
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "transition": {
+    "type": "fade",
+    "seconds": 0.6
+  },
+  "sky": "media/tycho-star-map.jpg",
+  "fonts": [
+    "Murecho",
+    "IBM Plex Sans JP",
+    "Unbounded",
+    "JetBrains Mono"
+  ],
+  "style": {
+    "bg": "#03060d",
+    "fg": "#EDE7DA",
+    "muted": "#A9AFBC",
+    "accent": "#F2B33D",
+    "glow": "rgba(242,179,61,.10)",
+    "head": "\"Murecho\", \"Noto Sans CJK JP\", sans-serif",
+    "body": "\"IBM Plex Sans JP\", \"Noto Sans CJK JP\", sans-serif",
+    "num": "\"Unbounded\", \"Murecho\", sans-serif",
+    "mono": "\"JetBrains Mono\", monospace"
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "seconds": 3.6,
+      "kicker": "Solar System Tour",
+      "title": "NASA の画像で旅する、太陽系",
+      "sub": "金星から冥王星まで、30 秒の旅へ。",
+      "credit": "画像: NASA"
+    },
+    {
+      "type": "globe",
+      "seconds": 4.2,
+      "texture": "media/venus.jpg",
+      "side": "right",
+      "spin": -6,
+      "glow": "#f2a45a",
+      "glowStrength": 1.3,
+      "kicker": "Venus 金星",
+      "title": "地表は鉛も溶ける灼熱の世界",
+      "big": "467",
+      "unit": "℃",
+      "credit": "出典: NASA Science「Venus Facts」／画像: NASA"
+    },
+    {
+      "type": "globe",
+      "seconds": 4.2,
+      "texture": "media/mars.jpg",
+      "side": "left",
+      "spin": 18,
+      "tilt": 25,
+      "glow": "#e08a5a",
+      "glowStrength": 0.8,
+      "kicker": "Mars 火星",
+      "title": "エベレストの約 4.5 倍の山がある",
+      "big": "40",
+      "unit": "km",
+      "caption": "オリンポス山の高さ（ふもとから）",
+      "credit": "出典: NASA Science「Mars Facts」／画像: NASA"
+    },
+    {
+      "type": "globe",
+      "seconds": 4.2,
+      "texture": "media/jupiter.jpg",
+      "side": "right",
+      "spin": 30,
+      "tilt": 3,
+      "glow": "#e8c08a",
+      "glowStrength": 0.9,
+      "radius": 1.6,
+      "kicker": "Jupiter 木星",
+      "title": "地球が約 1,000 個入る大きさ",
+      "big": "1,000",
+      "unit": "個",
+      "credit": "出典: NASA Science「Jupiter Facts」／画像: NASA"
+    },
+    {
+      "type": "globe",
+      "seconds": 4.6,
+      "texture": "media/saturn.jpg",
+      "side": "left",
+      "spin": 26,
+      "tilt": 16,
+      "glow": "#e8d2a0",
+      "glowStrength": 0.7,
+      "radius": 1.05,
+      "ring": true,
+      "kicker": "Saturn 土星",
+      "title": "巨大なお風呂があれば浮かぶ",
+      "caption": "平均密度が水より小さい唯一の惑星",
+      "credit": "出典: NASA Science「Saturn Facts」／画像: NASA（環は CG）"
+    },
+    {
+      "type": "globe",
+      "seconds": 4.2,
+      "texture": "media/neptune.jpg",
+      "side": "right",
+      "spin": 34,
+      "tilt": 28,
+      "glow": "#6aa0ff",
+      "glowStrength": 1.4,
+      "kicker": "Neptune 海王星",
+      "title": "時速 2,000 km の風が吹く",
+      "big": "2,000",
+      "unit": "km/h",
+      "credit": "出典: NASA Science「Neptune Facts」／画像: NASA"
+    },
+    {
+      "type": "globe",
+      "seconds": 4.2,
+      "texture": "media/pluto.jpg",
+      "side": "left",
+      "spin": 12,
+      "glow": "#d9c2a8",
+      "glowStrength": 0.6,
+      "radius": 1.3,
+      "kicker": "Pluto 冥王星",
+      "title": "素顔が見えたのは 2015 年のこと",
+      "caption": "探査機ニュー・ホライズンズが接近",
+      "credit": "出典: NASA Science「Pluto Facts」／画像: NASA"
+    },
+    {
+      "type": "end",
+      "seconds": 3.6,
+      "kicker": "Your turn",
+      "title": "本物の宇宙の画像は、誰でも見られる",
+      "sub": "images.nasa.gov",
+      "credit": "画像: NASA（NASA 3D Resources）。NASA が本動画を推奨・監修しているものではありません。"
+    }
+  ]
+}

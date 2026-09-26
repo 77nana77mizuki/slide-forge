@@ -1,0 +1,36 @@
+/*
+@theme forest
+@name 森 Forest
+@scheme dark
+@mood 穏やか・信頼・長期視点 / calm, trustworthy
+@best 年次報告・サステナビリティ・振り返り・経営方針
+@font Zen Old Mincho | 400,700,900
+@font Zen Kaku Gothic New | 400,500,700
+@font Fraunces | 400,600,800
+@font JetBrains Mono | 500,700
+*/
+:root {
+  --bg: #17302A; --fg: #F1EBDD; --muted: #A9B8AC; --accent: #E58A55; --inv-accent: #A94A1E; --accent-2: #E9C46A;
+  --surface: #1E3B33; --surface-2: #28493F; --line: rgba(241, 235, 221, .16); --on-accent: #17302A; --letterbox: #0b1714;
+  --inv-bg: #F1EBDD; --inv-fg: #17302A; --inv-muted: #5B6E62; --inv-surface: #FAF6EC; --inv-surface-2: #E0D8C5; --inv-line: rgba(23, 48, 42, .16);
+  --font-head: "Zen Old Mincho", "Noto Serif JP", "Noto Serif CJK JP", serif;
+  --font-body: "Zen Kaku Gothic New", "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
+  --font-num: "Fraunces", "Zen Old Mincho", serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --w-head: 900; --lh-head: 1.4; --radius: 14px; --track-head: .03em;
+}
+/* layered hills along the bottom edge */
+.slide::before {
+  content: ""; position: absolute; inset: auto 0 0 0; height: 300px; z-index: 0; pointer-events: none; opacity: .5;
+  background:
+    radial-gradient(120% 100% at 20% 100%, rgba(233, 196, 106, .10) 0 40%, transparent 41%),
+    radial-gradient(90% 120% at 85% 120%, rgba(229, 138, 85, .10) 0 45%, transparent 46%);
+}
+.slide.invert::before { opacity: .8; }
+.stat .value { font-weight: 600; }
+.stat { border-top-color: var(--line); }
+.stat.hl { border-top-color: var(--accent); }
+.L-section .sec-no { font-weight: 400; font-style: italic; color: var(--accent-2); }
+.slide.invert .L-section .sec-no, .L-section.invert .sec-no { color: var(--accent-ink); }
+.quote::before { font-family: var(--font-num); }
+.card { background: var(--surface); }

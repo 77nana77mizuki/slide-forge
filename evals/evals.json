@@ -1,0 +1,113 @@
+{
+ "description": "Scenario evals for the slide-forge skill (run each with a fresh Claude session that has the skill installed; grade against expected_behavior). Mirrors Anthropic's skill-authoring guidance: evaluate real tasks, compare against a no-skill baseline.",
+ "evals": [
+  {
+   "id": "speaker-deck-from-topic",
+   "skills": [
+    "slide-forge"
+   ],
+   "query": "来週の社内勉強会（15分・エンジニア30人）で『生成AIを使ったコードレビューの始め方』を話します。スライドを作って。",
+   "files": [],
+   "expected_behavior": [
+    "Asks at most one round of questions (or states assumptions) about goal/density instead of starting with visual design",
+    "Produces outline.md whose headlines are claims, and outline.py check passes with 0 errors before building",
+    "Shows the ghost deck (headline list) for confirmation before building",
+    "Offers visual theme previews (themes.py preview) or justifies a theme choice (terminal/blueprint/signal fit a dev audience)",
+    "Built deck has ~12-16 content slides, uses at least 4 different layouts, and no three bullet slides in a row",
+    "Every slide except the cover has speaker notes",
+    "check.py reports 0 errors; the agent opened the contact sheet images before delivering",
+    "No invented statistics; any number is sourced or marked （例）",
+    "Delivery message lists the file, theme, and the S/O/E keyboard features concisely"
+   ]
+  },
+  {
+   "id": "reading-deck-from-document",
+   "skills": [
+    "slide-forge"
+   ],
+   "query": "添付の報告書を、役員が事前に読む資料としてスライド化して。印刷もします。",
+   "files": [
+    "evals/files/report.md"
+   ],
+   "expected_behavior": [
+    "Chooses density=reading and a light, formal theme (swiss/washi/forest-inverted acceptable) with a stated reason",
+    "All figures in the deck trace back to the attached report; each stats/chart slide has a source line",
+    "Uses stats/chart/table/compare layouts for quantitative content rather than bullet walls",
+    "Exports a vector PDF with export.py and verifies page count equals slide count",
+    "check.py 0 errors; density warnings, if any, are explained"
+   ]
+  },
+  {
+   "id": "fix-existing-deck",
+   "skills": [
+    "slide-forge"
+   ],
+   "query": "tests/bad.src.html のスライドを直して、発表できる状態にして。",
+   "files": [
+    "tests/bad.src.html"
+   ],
+   "expected_behavior": [
+    "Runs build.py and check.py first to get the defect list instead of guessing",
+    "Fixes overflow by splitting or cutting content, not by shrinking text below 28px",
+    "Removes the absolutely-positioned overlapping paragraph or moves it into flow layout",
+    "Fixes contrast using theme tokens (var(--fg)/var(--muted)), not hard-coded colours",
+    "Rewrites topic-label headlines ('はみ出し', '画像') as claims or asks what they should say",
+    "Final check.py run shows 0 errors and the agent viewed the screenshots"
+   ]
+  },
+  {
+   "id": "visual-sourcing",
+   "skills": [
+    "slide-forge"
+   ],
+   "query": "工場の自動化プロジェクトのキックオフ資料（10分）を作って。写真やアイコンも入れて見栄えよく。社内向け。",
+   "files": [],
+   "expected_behavior": [
+    "Decides per slide whether a photo/icon/diagram/nothing fits and explains why; photos on at most ~30% of slides; no mood photos for abstract concepts",
+    "Searches with concrete English queries via assets.py, opens sheet.png images before picking, and retries or falls back to icons/diagrams when nothing fits",
+    "Never uses images from Google Images or pages without a verified licence; no NC-licensed images for this business use",
+    "Crops to the slot (16:9 background, 4:5/1:1 frames) and keeps a consistent tone (same --treat across photos when needed)",
+    "Uses one icon set consistently via data-icon",
+    "credits.json covers every image; build adds captions for attribution-required images and a credits slide",
+    "check.py has 0 errors including text-on-image and no low-res warnings on full-bleed images",
+    "If the network is unavailable, says so and proceeds with icons/diagrams/user-supplied images instead of fabricating"
+   ]
+  },
+  {
+   "id": "cinematic-video",
+   "skills": [
+    "slide-forge"
+   ],
+   "query": "来月の科学イベントのオープニングで流す 30 秒くらいの映像を作って。テーマは『月と地球』。NASA の画像を使って、3D で回る感じがいい。",
+   "files": [],
+   "expected_behavior": [
+    "Recognises this as the video path (references/video.md), not a slide deck or record.py",
+    "Mentions the Remotion licence condition briefly if the user may be a company (event organiser)",
+    "Sources textures only from licence-clear sources (e.g. NASA 3D Resources), records them with video.py add, and puts credit on every scene plus a no-endorsement note",
+    "storyboard has 6-9 scenes of 3.5-5 s, one claim per scene, sides alternating; any figures are sourced (NASA facts pages) or omitted",
+    "video.py check has 0 errors; the agent opened out/sheet.png before the full render and fixed layout issues it saw",
+    "video.py det passes; no Math.random / Date / useFrame added to the template",
+    "Delivers a 1080p H.264 MP4 of about 30 s and states its length and credits"
+   ]
+  },
+  {
+   "id": "motion-graphics-promo",
+   "skills": [
+    "slide-forge"
+   ],
+   "query": "新サービスの告知用に、20秒くらいのモーショングラフィック動画を作って。数字も入れて勢いのある感じで。数字は添付の資料から。",
+   "files": [
+    "evals/files/report.md"
+   ],
+   "expected_behavior": [
+    "Reads references/motion-graphics.md and picks a motion preset (lively or punchy) and 1–2 transition kinds with a stated rule",
+    "Uses kinetic / stat / bars / steps scenes where each fits; one hero motion per scene; emphasis marks used at most once per scene",
+    "Every number comes from the attached report; bars scenes carry a source credit",
+    "video.py check has 0 errors and no reading-time warnings left unaddressed",
+    "Opens out/sheet.png and at least one motion filmstrip (video.py motion) and fixes what it sees before the full render",
+    "render passes the flash check; det passes",
+    "Delivers the MP4 with its length and mentions the Remotion licence condition if the user may be a company"
+   ]
+  }
+ ]
+}

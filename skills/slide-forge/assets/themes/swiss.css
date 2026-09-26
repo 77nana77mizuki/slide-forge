@@ -1,0 +1,34 @@
+/*
+@theme swiss
+@name スイス Swiss
+@scheme light
+@mood 端正・ビジネス・ミニマル / crisp, corporate, minimal
+@best 社外提案・役員報告・顧客向け資料（最も無難で格調高い選択肢）
+@font Noto Sans JP | 400..900
+@font Archivo | 400..900
+@font IBM Plex Mono | 500,600
+*/
+:root {
+  --bg: #FFFFFF; --fg: #0F0F10; --muted: #6A6A70; --accent: #E4032E; --accent-ink: #C4001F; --inv-accent: #FF4D6A; --accent-2: #0F0F10;
+  --surface: #F4F4F2; --surface-2: #E8E8E4; --line: rgba(15, 15, 16, .14); --on-accent: #FFFFFF; --letterbox: #0f0f10;
+  --inv-bg: #0F0F10; --inv-fg: #FFFFFF; --inv-muted: #9C9CA3; --inv-surface: #1C1C1F; --inv-surface-2: #29292D; --inv-line: rgba(255, 255, 255, .16);
+  --font-head: "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
+  --font-body: "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
+  --font-num: "Archivo", "Noto Sans JP", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  --w-head: 900; --lh-head: 1.28; --radius: 0px; --track-head: -.005em;
+}
+/* the Swiss signature: a single red block + strict left column */
+.slide::before { content: ""; position: absolute; left: var(--pad-x); top: 0; width: 88px; height: 14px; background: var(--accent); z-index: 0; }
+.L-title::before { width: 100%; left: 0; height: 18px; }
+.kicker { color: var(--fg); }
+.kicker::before { background: var(--accent); width: 16px; height: 16px; }
+.stat .value { font-weight: 800; letter-spacing: -.045em; }
+.stat { border-top-width: 6px; }
+.card { background: var(--surface); border: 0; }
+.card.hl { background: var(--fg); color: #fff; }
+.card.hl .tag, .card.hl p { color: rgba(255, 255, 255, .72); }
+.L-section .sec-no { font-weight: 800; letter-spacing: -.05em; }
+.L-statement .statement { letter-spacing: -.02em; }
+.points > li::before { height: 6px; width: 24px; }
+.quote::before { content: "—"; left: -1.2em; top: 0; font-size: 1em; }

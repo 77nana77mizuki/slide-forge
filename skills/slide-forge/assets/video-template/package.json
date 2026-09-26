@@ -1,0 +1,36 @@
+{
+  "name": "slide-forge-video",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "node render.mjs video"
+  },
+  "dependencies": {
+    "@react-three/fiber": "9.8.1",
+    "@remotion/bundler": "4.0.529",
+    "@remotion/cli": "4.0.529",
+    "@remotion/effects": "4.0.529",
+    "@remotion/layout-utils": "4.0.529",
+    "@remotion/lottie": "4.0.529",
+    "@remotion/motion-blur": "4.0.529",
+    "@remotion/noise": "4.0.529",
+    "@remotion/paths": "4.0.529",
+    "@remotion/renderer": "4.0.529",
+    "@remotion/rough-notation": "4.0.529",
+    "@remotion/shapes": "4.0.529",
+    "@remotion/three": "4.0.529",
+    "@remotion/transitions": "4.0.529",
+    "budoux": "0.9.2",
+    "lottie-web": "5.13.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.529",
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.2",
+    "@types/three": "0.180.0",
+    "typescript": "5.6.3"
+  }
+}

@@ -1,0 +1,58 @@
+/*
+@theme pop
+@name ポップ Pop
+@scheme light
+@mood 楽しい・親しみ・ワークショップ / friendly, playful
+@best 地域・自治会・子ども向け・社内イベント・ワークショップ
+@font Mochiy Pop One | 400
+@font M PLUS Rounded 1c | 400,700,800
+@font Archivo | 400..900
+*/
+:root {
+  --bg: #FFF4E0; --fg: #161616; --muted: #5E5648; --accent: #FF5A36; --accent-ink: #B32A08; --inv-accent: #FFD23F; --inv-accent-ink: #FFD23F; --accent-2: #3A6BFF;
+  --c1: #FFD23F; --c2: #9BE7C4; --c3: #C7B8FF; --c4: #FFB3C7;
+  --surface: #FFFFFF; --surface-2: #F3E4C8; --line: #161616; --on-accent: #161616; --letterbox: #1d1a15;
+  --inv-bg: #2A4FCC; --inv-fg: #FFFFFF; --inv-muted: #E6ECFF; --inv-surface: #FFFFFF; --inv-surface-2: #6E91FF; --inv-line: #161616;
+  --font-head: "Mochiy Pop One", "M PLUS Rounded 1c", "Noto Sans CJK JP", sans-serif;
+  --font-body: "M PLUS Rounded 1c", "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
+  --font-num: "Archivo", "Mochiy Pop One", sans-serif;
+  --font-mono: "Archivo", "M PLUS Rounded 1c", sans-serif;
+  --w-head: 400; --w-body: 500; --w-strong: 800; --lh-head: 1.42; --radius: 26px; --track-head: .02em;
+  --shadow: 10px 10px 0 #161616;
+}
+/* confetti dots */
+.slide::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: .55;
+  background:
+    radial-gradient(circle at 92% 12%, var(--c1) 0 70px, transparent 71px),
+    radial-gradient(circle at 98% 66%, var(--c2) 0 100px, transparent 101px),
+    radial-gradient(circle at 1.5% 48%, var(--c3) 0 56px, transparent 57px);
+}
+.slide.invert::before { opacity: .9; }
+.kicker { font-family: var(--font-body); font-weight: 800; background: var(--c1); color: var(--fg); padding: 8px 22px; border: 3px solid var(--fg); border-radius: 999px; letter-spacing: .06em; }
+.kicker::before { display: none; }
+.card, .flow .node, .compare > .side { border: 4px solid var(--fg); box-shadow: var(--shadow); }
+.cards .card:nth-child(4n+1) { background: var(--c1); }
+.cards .card:nth-child(4n+2) { background: var(--c2); }
+.cards .card:nth-child(4n+3) { background: var(--c3); }
+.cards .card:nth-child(4n+4) { background: var(--c4); }
+.card p { color: #3b362d; }
+.card .tag { color: var(--fg); font-weight: 800; }
+.card.hl { background: var(--accent) !important; }
+.stat { border-top: none; background: var(--surface); border: 4px solid var(--fg); border-radius: var(--radius); padding: 36px 36px 32px; box-shadow: var(--shadow); }
+.stat.hl { background: var(--c1); }
+.stat .value { font-weight: 900; }
+.points:not(.numbered) > li::before { width: 26px; height: 26px; border-radius: 50%; background: var(--accent); border: 3px solid var(--fg); top: .42em; }
+.bar .track { border: 3px solid var(--fg); height: 50px; background: var(--surface); }
+.bar .fill { background: var(--c3); border-radius: 0; }
+.bar.hl .fill { background: var(--accent); }
+.col-bar .fill { background: var(--c3); border: 3px solid var(--fg); border-bottom: 0; }
+.col-bar.hl .fill { background: var(--accent); }
+.L-section .sec-no { color: var(--fg); -webkit-text-stroke: 0; text-shadow: 8px 8px 0 var(--c1); }
+.slide.invert .card p { color: #3b362d; }
+.code { border: 4px solid var(--fg); box-shadow: var(--shadow); }
+/* boxes keep dark ink even on inverted (blue) slides */
+.card, .stat, .flow .node, .compare > .side:not(.after) { color: #161616; --muted: #5E5648; }
+.card.hl { color: #161616; }
+.stat.hl .value { color: #161616; }
+.points.numbered > li::before { color: var(--accent); font-weight: 800; }

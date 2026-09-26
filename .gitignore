@@ -1,0 +1,5 @@
+tests/_out/
+__pycache__/
+qa/
+previews/
+img/_cand/

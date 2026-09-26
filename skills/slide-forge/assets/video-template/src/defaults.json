@@ -1,0 +1,9 @@
+{
+  "_comment": "Shared by Movie.tsx and scripts/video.py — default transition per motion preset.",
+  "transition": {
+    "calm":   { "type": "fade",    "seconds": 0.6,  "timing": "ease" },
+    "lively": { "type": "wipe",    "seconds": 0.5,  "timing": "ease", "direction": "from-left" },
+    "punchy": { "type": "pushCut", "seconds": 0.4,  "timing": "ease" }
+  },
+  "shader": ["crossZoom", "blurSlide", "zoomInOut", "swap", "dissolve", "filmBurn", "zoomBlur", "linearBlur", "dreamyZoom", "ripple", "crosswarp", "bookFlip"]
+}

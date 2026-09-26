@@ -1,0 +1,11 @@
+{
+  "name": "slide-forge",
+  "owner": { "name": "Misao" },
+  "plugins": [
+    {
+      "name": "slide-forge",
+      "source": "./",
+      "description": "アニメーション付きHTMLスライド生成ハーネス（スキル・エージェント・QAスクリプト）"
+    }
+  ]
+}

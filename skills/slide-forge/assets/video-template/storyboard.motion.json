@@ -1,0 +1,119 @@
+{
+  "title": "Slide Forge モーション",
+  "lang": "ja",
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "motion": "lively",
+  "transition": {
+    "type": "wipe",
+    "seconds": 0.5,
+    "direction": "from-left",
+    "timing": "ease"
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "seconds": 3.4,
+      "backdrop": "mesh",
+      "kicker": "Slide Forge",
+      "title": "話す順に、**動く**。",
+      "sub": "スライドと映像を、ひとつの手順で。"
+    },
+    {
+      "type": "kinetic",
+      "seconds": 3.2,
+      "text": "スライドも、\n==映像==も。",
+      "effect": "pop",
+      "align": "center",
+      "backdrop": "dots"
+    },
+    {
+      "type": "steps",
+      "seconds": 5.6,
+      "kicker": "How it works",
+      "title": "作り方は **4** ステップ",
+      "items": [
+        {
+          "title": "構成",
+          "text": "見出しを主張で書く"
+        },
+        {
+          "title": "見た目",
+          "text": "テーマを選ぶ"
+        },
+        {
+          "title": "動き",
+          "text": "話す順に出す"
+        },
+        {
+          "title": "検証",
+          "text": "自動検査と目視"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "seconds": 4.5,
+      "transition": {
+        "type": "blurSlide",
+        "seconds": 0.6,
+        "direction": "from-right"
+      },
+      "kicker": "Quality",
+      "big": "16",
+      "unit": "種",
+      "title": "描画したあとに、==自動で検査==",
+      "caption": "はみ出し・重なり・コントラスト・写真の上の文字"
+    },
+    {
+      "type": "bars",
+      "seconds": 5.0,
+      "kicker": "Tests",
+      "title": "テストで**いちばん多い**のは映像",
+      "unit": "項目",
+      "highlight": "映像",
+      "items": [
+        {
+          "label": "映像",
+          "value": 24
+        },
+        {
+          "label": "操作テスト",
+          "value": 20
+        },
+        {
+          "label": "画像まわり",
+          "value": 11
+        },
+        {
+          "label": "欠陥の検出",
+          "value": 6
+        }
+      ],
+      "credit": "出典: Slide Forge tests/run_all.sh（v1.3）"
+    },
+    {
+      "type": "kinetic",
+      "seconds": 3.8,
+      "overlay": {
+        "type": "lightLeak",
+        "seconds": 1.0,
+        "seed": 3
+      },
+      "backdrop": "grid",
+      "text": "何度書き出しても、\n**同じ映像**に。",
+      "effect": "scramble",
+      "sub": "動きはすべてコマ番号から計算"
+    },
+    {
+      "type": "end",
+      "seconds": 3.6,
+      "backdrop": "rays",
+      "effect": "shimmer",
+      "kicker": "Your turn",
+      "title": "伝わる動きを、\nつくろう。",
+      "sub": "/slide-forge"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+/*
+@theme blueprint
+@name ブループリント Blueprint
+@scheme light
+@mood 技術的・精密・設計図 / precise engineering
+@best 設計レビュー・技術説明・アーキテクチャ・製造業向け
+@font M PLUS 1 | 400..900
+@font BIZ UDPGothic | 400,700
+@font IBM Plex Mono | 500,600,700
+*/
+:root {
+  --bg: #F1F4F9; --fg: #0E1B3D; --muted: #5A6784; --accent: #1F4BD8; --inv-accent: #FFD166; --accent-2: #FF6B35;
+  --surface: #FFFFFF; --surface-2: #DFE6F3; --line: rgba(31, 75, 216, .18); --on-accent: #FFFFFF; --letterbox: #0a1330;
+  --inv-bg: #16338F; --inv-fg: #EEF3FF; --inv-muted: #A9BDF5; --inv-surface: #1D3FA8; --inv-surface-2: #2A4DB8; --inv-line: rgba(238, 243, 255, .25);
+  --font-head: "M PLUS 1", "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
+  --font-body: "BIZ UDPGothic", "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
+  --font-num: "IBM Plex Mono", "M PLUS 1", monospace;
+  --font-mono: "IBM Plex Mono", monospace;
+  --w-head: 800; --lh-head: 1.34; --radius: 6px;
+}
+/* graph paper: fine 24px grid + bold 120px grid */
+.slide::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    linear-gradient(rgba(31, 75, 216, .07) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, rgba(31, 75, 216, .07) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(rgba(31, 75, 216, .12) 1px, transparent 1px) 0 0 / 120px 120px,
+    linear-gradient(90deg, rgba(31, 75, 216, .12) 1px, transparent 1px) 0 0 / 120px 120px;
+}
+.slide.invert::before {
+  background:
+    linear-gradient(rgba(255, 255, 255, .08) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, rgba(255, 255, 255, .08) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(rgba(255, 255, 255, .16) 1px, transparent 1px) 0 0 / 120px 120px,
+    linear-gradient(90deg, rgba(255, 255, 255, .16) 1px, transparent 1px) 0 0 / 120px 120px;
+}
+/* registration mark on the cover (purely graphic — never fake text) */
+.L-title::after {
+  content: ""; position: absolute; right: 136px; top: 112px; z-index: 1; width: 120px; height: 120px;
+  border: 3px solid var(--accent); border-radius: 50%;
+  background: linear-gradient(var(--accent), var(--accent)) center / 3px 170% no-repeat, linear-gradient(var(--accent), var(--accent)) center / 170% 3px no-repeat;
+  overflow: visible;
+}
+.kicker::before { width: 20px; height: 20px; background: none; border: 3px solid currentColor; transform: rotate(45deg); }
+/* corner ticks on cards and nodes */
+.card, .flow .node { position: relative; border: 1.5px solid var(--line); }
+.card::before, .flow .node::before {
+  content: ""; position: absolute; inset: -8px; pointer-events: none;
+  background:
+    linear-gradient(var(--accent), var(--accent)) 0 0 / 22px 3px no-repeat, linear-gradient(var(--accent), var(--accent)) 0 0 / 3px 22px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) 100% 100% / 22px 3px no-repeat, linear-gradient(var(--accent), var(--accent)) 100% 100% / 3px 22px no-repeat;
+}
+.stat .value { font-weight: 600; letter-spacing: -.04em; }
+.stat { border-top: 2px dashed var(--accent); }
+.L-section .sec-no { font-family: var(--font-mono); font-weight: 600; }
+.L-section .sec-no::before { content: "§"; margin-right: .1em; opacity: .4; }
+.code { background: #0B1633; }

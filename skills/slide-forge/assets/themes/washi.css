@@ -1,0 +1,41 @@
+/*
+@theme washi
+@name 和紙 Washi
+@scheme light
+@mood 知的・落ち着き・編集的 / calm, literate, editorial
+@best 講演・勉強会・提案・読み物系デッキ
+@font Shippori Mincho B1 | 500,700,800
+@font Zen Kaku Gothic New | 400,500,700
+@font Fraunces | 400,600,800
+@font JetBrains Mono | 500,700
+*/
+:root {
+  --bg: #F3EEE3; --fg: #1D1B18; --muted: #6E675D; --accent: #C23A22; --accent-ink: #AD3219; --inv-accent: #EE7A60; --accent-2: #2F5D8A;
+  --surface: #FBF8F2; --surface-2: #E4DDCE; --line: rgba(29, 27, 24, .16); --on-accent: #FBF8F2; --letterbox: #16140f;
+  --inv-bg: #1D1B18; --inv-fg: #F3EEE3; --inv-muted: #A79F92; --inv-surface: #2A2723; --inv-surface-2: #37332d; --inv-line: rgba(243, 238, 227, .18);
+  --font-head: "Shippori Mincho B1", "Noto Serif JP", "Noto Serif CJK JP", serif;
+  --font-body: "Zen Kaku Gothic New", "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
+  --font-num: "Fraunces", "Shippori Mincho B1", serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --w-head: 800; --lh-head: 1.4; --radius: 4px; --track-head: .02em;
+}
+/* paper grain + a hairline margin rule — the washi signature */
+.slide::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image: radial-gradient(rgba(60, 40, 20, .05) 1px, transparent 1.2px), radial-gradient(rgba(60, 40, 20, .035) 1px, transparent 1.2px);
+  background-size: 7px 7px, 11px 11px; background-position: 0 0, 3px 5px;
+}
+.slide::after { content: ""; position: absolute; top: 64px; bottom: 64px; left: 72px; width: 1px; background: var(--line); z-index: 0; }
+.slide.invert::before, .slide.accent-bg::before { opacity: .35; }
+.kicker { color: var(--accent); }
+.L-title .hero { font-size: 128px; line-height: 1.22; }
+.L-title::after { left: auto; right: 136px; top: 112px; bottom: auto; width: 132px; height: 132px; border: 6px solid var(--accent); border-radius: 50%; background: none; opacity: .9; }
+.L-section .sec-no { font-style: italic; font-weight: 400; }
+.card { background: transparent; border: 0; border-top: 3px solid var(--fg); border-radius: 0; padding: 36px 8px 0 0; }
+.card.hl { background: transparent; color: var(--fg); border-top-color: var(--accent); }
+.card.hl h3 { color: var(--accent); }
+.card.hl p, .card.hl .tag { color: var(--muted); }
+.stat .value { font-weight: 600; }
+.quote { font-weight: 700; }
+.compare > .side { border-radius: 2px; }
+.code { background: #211f1b; }

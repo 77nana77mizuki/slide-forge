@@ -1,0 +1,43 @@
+/*
+@theme signal
+@name シグナル Signal
+@scheme dark
+@mood 自信・キーノート・プロダクト発表 / confident keynote
+@best 製品発表・経営報告・カンファレンス登壇
+@font Murecho | 400..900
+@font IBM Plex Sans JP | 400,500,700
+@font Unbounded | 400..800
+@font JetBrains Mono | 500,700
+*/
+:root {
+  --bg: #0C1422; --fg: #EDE7DA; --muted: #8E95A3; --accent: #F2B33D; --inv-accent: #A86200; --accent-2: #5CC8FF;
+  --surface: #131E31; --surface-2: #1C2940; --line: rgba(237, 231, 218, .14); --on-accent: #0C1422; --letterbox: #05080e;
+  --inv-bg: #EDE7DA; --inv-fg: #0C1422; --inv-muted: #5B6272; --inv-surface: #F7F3EA; --inv-surface-2: #DCD5C6; --inv-line: rgba(12, 20, 34, .16);
+  --font-head: "Murecho", "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
+  --font-body: "IBM Plex Sans JP", "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
+  --font-num: "Unbounded", "Murecho", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --w-head: 800; --lh-head: 1.3; --radius: 18px;
+  --shadow: 0 40px 80px -40px rgba(0, 0, 0, .8);
+}
+/* amber glow + fading engineering grid */
+.slide::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(900px 600px at 88% -10%, rgba(242, 179, 61, .16), transparent 70%),
+    radial-gradient(700px 500px at -5% 110%, rgba(92, 200, 255, .10), transparent 70%),
+    linear-gradient(rgba(237, 231, 218, .045) 1px, transparent 1px) 0 0 / 80px 80px,
+    linear-gradient(90deg, rgba(237, 231, 218, .045) 1px, transparent 1px) 0 0 / 80px 80px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.35) 100%); mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.35) 100%);
+}
+.slide.invert::before { opacity: .25; }
+.hero, .L-statement .statement { letter-spacing: -.005em; }
+.L-title .hero { text-shadow: 0 0 80px rgba(242, 179, 61, .18); }
+.stat .value { font-weight: 700; letter-spacing: -.03em; }
+.stat { border-top-width: 2px; border-top-color: var(--line); }
+.stat.hl { border-top-color: var(--accent); }
+.card { background: linear-gradient(180deg, var(--surface-2), var(--surface)); }
+.card.hl { background: var(--accent); }
+.L-section .sec-no { font-weight: 800; -webkit-text-stroke: 3px var(--accent); color: transparent; }
+.kicker::before { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 18px var(--accent); }
+.code { background: #070b12; border: 1px solid var(--line); }

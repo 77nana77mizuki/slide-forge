@@ -1,0 +1,41 @@
+/*
+@theme terminal
+@name ターミナル Terminal
+@scheme dark
+@mood ハッカー・開発者・ライブデモ / developer, hacker
+@best 技術LT・開発者向け勉強会・AI/ツール紹介・コード解説
+@font Zen Kaku Gothic New | 400,700,900
+@font DotGothic16 | 400
+@font JetBrains Mono | 400,500,700,800
+*/
+:root {
+  --bg: #0A0F0C; --fg: #DDF6E6; --muted: #7C9A87; --accent: #5CFFA1; --inv-accent: #6B003A; --accent-2: #FF5CAA;
+  --surface: #101812; --surface-2: #18231B; --line: rgba(92, 255, 161, .18); --on-accent: #06110A; --letterbox: #030504;
+  --inv-bg: #5CFFA1; --inv-fg: #06110A; --inv-muted: #1F5A39; --inv-surface: #7DFFB6; --inv-surface-2: #4BE08B; --inv-line: rgba(6, 17, 10, .2);
+  --font-head: "Zen Kaku Gothic New", "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
+  --font-body: "Zen Kaku Gothic New", "Noto Sans JP", "Noto Sans CJK JP", sans-serif;
+  --font-num: "JetBrains Mono", monospace;
+  --font-mono: "JetBrains Mono", monospace;
+  --w-head: 900; --lh-head: 1.3; --radius: 10px;
+}
+/* CRT: scanlines + phosphor vignette */
+.slide::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, .025) 0 1px, transparent 1px 4px),
+    radial-gradient(1200px 700px at 50% 40%, rgba(92, 255, 161, .07), transparent 70%);
+}
+.slide.invert::before { opacity: .4; }
+.kicker { font-family: "DotGothic16", var(--font-mono); letter-spacing: .08em; text-transform: none; }
+.kicker::before { content: "$"; width: auto; height: auto; background: none; font-family: var(--font-mono); }
+.hero, .L-statement .statement, .L-section h2 { text-shadow: 0 0 40px rgba(92, 255, 161, .12); }
+.accent, .stat.hl .value, .L-section .sec-no { text-shadow: 0 0 24px rgba(92, 255, 161, .45); }
+.L-title .hero::after { content: "▍"; color: var(--accent); margin-left: .08em; animation: sf-blink 1s steps(1) infinite; }
+@keyframes sf-blink { 50% { opacity: 0; } }
+.stat .value { font-weight: 800; letter-spacing: -.04em; }
+.stat { border-top: 2px solid var(--line); }
+.card { background: var(--surface); border: 1px solid var(--line); }
+.card .tag::before { content: "// "; opacity: .6; }
+.points:not(.numbered) > li::before { content: ">"; width: auto; height: auto; background: none; color: var(--accent); font-family: var(--font-mono); font-weight: 700; top: 0; }
+.code { background: #050806; border: 1px solid var(--line); }
+@media (prefers-reduced-motion: reduce) { .L-title .hero::after { animation: none; } }
