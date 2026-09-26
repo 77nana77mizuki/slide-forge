@@ -1,6 +1,6 @@
 ---
 name: "slide-forge"
-description: "アニメーション付きHTMLスライドと短い動画（Remotion×three.js）を作る最新版（v1.5）。データベース図・Excel出力画面のイメージ（新旧比較）も作れる。旧 slide-forge の代わりにこちらを使う。スライド・プレゼン資料・発表資料・ヒアリング資料・動画。"
+description: "アニメーション付きHTMLスライドと短い動画（Remotion×three.js）を作る最新版（v1.6）。データベース図・Excel出力画面・Webアプリ/スマホ画面のイメージも作れる。スライド・プレゼン資料・発表資料・ヒアリング資料・動画。"
 ---
 
 # Slide Forge — 伝わるアニメーション付き HTML スライド
