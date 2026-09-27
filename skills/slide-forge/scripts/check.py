@@ -102,7 +102,7 @@ MEASURE_JS = r"""
       if (el.closest('aside.notes, svg, .deck-chrome') || !visible(el)) return;
       const cs = getComputedStyle(el);
       const clips = /(hidden|clip|auto|scroll)/.test(cs.overflow + cs.overflowX + cs.overflowY);
-      if (clips && !el.matches('.slide, .track, .bar .track, .frame, .donut, .code, .thumb') && !el.closest('.bleed, .bg') && (el.scrollHeight > el.clientHeight + 3 || el.scrollWidth > el.clientWidth + 3))
+      if (clips && !el.matches('.slide, .track, .bar .track, .frame, .donut, .code, .thumb, .zoom-view, .ba-slider, [data-anim="mask"] .sf-w, .bento > *') && !el.closest('.bleed, .bg, .zoom-canvas') && (el.scrollHeight > el.clientHeight + 3 || el.scrollWidth > el.clientWidth + 3))
         add('error', 'overflow', `content clipped inside container (${el.scrollWidth}×${el.scrollHeight} > ${el.clientWidth}×${el.clientHeight})`, el);
       if (el.matches('.code') && (el.scrollHeight > el.clientHeight + 3 || el.scrollWidth > el.clientWidth + 3))
         add('error', 'overflow', 'code block is clipped – shorten lines/lines or reduce font-size', el);
@@ -119,6 +119,10 @@ MEASURE_JS = r"""
     for (let i = 0; i < blocks.length; i++) for (let j = i + 1; j < blocks.length; j++) {
       const A = blocks[i], B = blocks[j];
       if (A.el.contains(B.el) || B.el.contains(A.el)) continue;
+      const cmp = A.el.closest('.ba-slider');                 // before/after layers are stacked on purpose (one is clipped away)
+      if (cmp && cmp.contains(B.el)) continue;
+      const pin = A.el.closest('.mk-japan .mk-anchor') || B.el.closest('.mk-japan .mk-anchor');   // map pins sit on top of tiles on purpose
+      if (pin && pin.closest('.mk-japan').contains(A.el) && pin.closest('.mk-japan').contains(B.el)) continue;
       let hit = false;
       for (const a of A.rects) { for (const b of B.rects) {
         const ix = Math.min(a.right, b.right) - Math.max(a.left, b.left), iy = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
@@ -136,8 +140,10 @@ MEASURE_JS = r"""
         add('warn', 'graphic-clipped', `graphic extends past the slide edge by ${Math.round(Math.max(q.right - S.right, q.bottom - S.bottom, S.left - q.left, S.top - q.top))}px – move it in or mark it .bleed`, g);
       for (const {el, rects} of blocks) {
         if (g.contains(el) || el.contains(g) || el.closest('.credit')) continue;
-        const mroot = g.closest('.mk-app, .mk-sheet, .mk-er');            // a mockup's own text, notes and callouts may sit on it
+        const mroot = g.closest('.mk-app, .mk-sheet, .mk-er, .mk-diagram, .mk-chart');            // a mockup's own text, notes and callouts may sit on it
         if (mroot && mroot.contains(el)) continue;
+        const layer = g.closest('.ba-slider, .zoom-canvas');                                         // stacked / zoomed layers
+        if (layer && layer.contains(el)) continue;
         if (rects.some(a => Math.min(a.right, q.right) - Math.max(a.left, q.left) > 6 && Math.min(a.bottom, q.bottom) - Math.max(a.top, q.top) > 6)) {
           add('error', 'text-over-graphic', `text "${el.textContent.trim().slice(0, 20)}" is covered by / collides with a graphic`, g); break; }
       }
@@ -151,8 +157,8 @@ MEASURE_JS = r"""
       if (el.closest('.deck-chrome')) return;
       const cs = getComputedStyle(el); const fs = parseFloat(cs.fontSize);
       const tag = el.textContent.trim().slice(0, 24);
-      if (fs < MIN_ERR && !el.closest('.source, .credit')) add('error', 'tiny-text', `${fs}px text: "${tag}"`, el);
-      else if (fs < MIN_WARN && !el.closest('.source, .kicker, .tag, .label, .caption, figcaption, .credit, .credits, .mk-er, .mk-sheet, .mk-device, .mk-w')) add('warn', 'small-text', `${fs}px text: "${tag}"`, el);
+      if (fs < MIN_ERR && !el.closest('.source, .credit, .zoom-canvas')) add('error', 'tiny-text', `${fs}px text: "${tag}"`, el);
+      else if (fs < MIN_WARN && !el.closest('.source, .kicker, .tag, .label, .caption, figcaption, .credit, .credits, .mk-er, .mk-sheet, .mk-device, .mk-w, .mk-chart, .mk-diagram, .zoom-canvas, .sf-3d-label')) add('warn', 'small-text', `${fs}px text: "${tag}"`, el);
       if (cs.color === 'rgba(0, 0, 0, 0)' || cs.webkitTextFillColor === 'rgba(0, 0, 0, 0)') return;
       if (onImg(blocks.find(b => b.el === el).rects)) return;
       const fp = parse(cs.color); const bg = bgOf(el);

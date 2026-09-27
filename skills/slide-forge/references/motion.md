@@ -34,6 +34,9 @@
 | `data-morph` | キー | 連続するスライドで同じキーの要素が移動・変形（マジックムーブ） |
 | `data-count` | 空 or 目標値 | 数字のカウントアップ（`data-count-from`, `data-count-dur`） |
 | `data-fit` | — | 枠からはみ出す文字を自動縮小（最後の安全網。常用しない） |
+| `data-anim`（v1.7） | `mask` `words` `type` `scramble` `slam` `tracking` | キネティック文字（expressive.md §9） |
+| `data-annotate` | `underline` `circle` `box` `highlight` `strike` `cross` `bracket` | 手描きの注釈（`data-annotate-step` でクリック時）expressive.md §3 |
+| `data-zoom` / `data-codemove` / `.ba-slider` | — | クリックでカメラ・コードの版・比較位置が進む（expressive.md §2・4・7） |
 
 **自動シーケンス**: `data-delay` を書かなければ、スライド内の `data-anim` 要素は文書順に 110ms ずつずれて出る（最初は 140ms 後）。だから通常は delay を書かなくてよい。
 

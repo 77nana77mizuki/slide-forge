@@ -413,6 +413,14 @@ def render_sheet(spec: dict, attrs: dict | None = None, base: Path = Path(".")) 
 
 
 # ─── placeholder handling ─────────────────────────────────────────────────────
+def em_abs(inner: str) -> str:
+    """Inside generated children, "12.5em" → "calc(12.5 * var(--mk-font))": a label that sets its own
+    font-size (e.g. max(20px, .85em)) then still lands exactly where the generator put it."""
+    def fix(m):
+        return m.group(1) + re.sub(r"(?<![\w.-])(-?\d+(?:\.\d+)?)em\b", r"calc(\1 * var(--mk-font))", m.group(2)) + m.group(3)
+    return re.sub(r'(style=")([^"]*)(")', fix, inner)
+
+
 def wrap(cls: str, attrs: dict | None, style: str, inner: str, label: str) -> str:
     attrs = dict(attrs or {})
     classes = (cls + " " + attrs.pop("class", "")).strip()
@@ -436,7 +444,16 @@ def render(kind: str, spec: dict, attrs=None, base: Path = Path(".")) -> str:
     if kind == "app":
         import mock_app
         return mock_app.render_app(spec, attrs, wrap)
-    raise ValueError(f"unknown mock kind {kind!r} (er | sheet | app)")
+    wrap_abs = lambda cls, a, style, inner, label: wrap(cls, a, style, em_abs(inner), label)  # noqa: E731
+    if kind == "chart":
+        import mock_chart
+        return mock_chart.render_chart(spec, attrs, wrap_abs, text_em)
+    if kind in ("arch", "seq", "japan"):
+        import mock_diagram
+        fn = {"arch": mock_diagram.render_arch, "seq": mock_diagram.render_seq,
+              "japan": mock_diagram.render_japan}[kind]
+        return fn(spec, attrs, wrap_abs, text_em)
+    raise ValueError(f"unknown mock kind {kind!r} (er | sheet | app | chart | arch | seq | japan)")
 
 
 def expand(body: str, src_dir: Path, warn) -> str:
@@ -472,7 +489,7 @@ def expand(body: str, src_dir: Path, warn) -> str:
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for k in ("er", "sheet", "app"):
+    for k in ("er", "sheet", "app", "chart", "arch", "seq", "japan"):
         p = sub.add_parser(k)
         p.add_argument("spec")
         p.add_argument("-o", "--out")

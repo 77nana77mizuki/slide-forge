@@ -36,6 +36,13 @@ rm -f "$MK/app.html"
 python3 "$SF/scripts/mock.py" diff --old "$MK/data/old.csv" --new "$MK/data/new.csv" --key 部品ID -o "$OUT/diff.json" >/dev/null \
   && python3 -c "import json,sys; r=[x['status'] for x in json.load(open(sys.argv[1]))['rows']]; assert r==['upd','new','new','upd','same','del'], r" "$OUT/diff.json" \
   && echo "✓ diff (new/upd/del/same)" || { echo "✗ diff"; fail=1; }
+echo "== expressive effects (charts, diagrams, zoom, code move, slider, 3D) =="
+FX="$SF/assets/examples/fx"
+python3 "$SF/scripts/build.py" "$FX/fx.src.html" -o "$OUT/fx.html" --fonts "$FONTS" 2>&1 | grep -q "⚠\|✗" && { echo "✗ fx build warnings"; fail=1; }
+python3 "$SF/scripts/check.py" "$OUT/fx.html" --out "$OUT/qa-fx" --no-shots | head -1 | grep -q " 0 errors" && echo "✓ fx deck" || { python3 "$SF/scripts/check.py" "$OUT/fx.html" --out "$OUT/qa-fx" --no-shots | head -8; fail=1; }
+python3 "$ROOT/tests/test_fx.py" "$OUT/fx.html" | tail -1 | grep -q " 0 failed" && echo "✓ fx runtime" || { python3 "$ROOT/tests/test_fx.py" "$OUT/fx.html" | grep FAIL; fail=1; }
+echo '{"type":"bar","labels":["A","B"],"series":[{"values":[1,2]}]}' > "$OUT/c.json"
+python3 "$SF/scripts/mock.py" chart "$OUT/c.json" | grep -q 'class="mk-chart' && echo "✓ mock.py chart CLI" || { echo "✗ chart CLI"; fail=1; }
 echo "== exports =="
 python3 "$SF/scripts/export.py" "$OUT/washi.html" --pdf "$OUT/washi.pdf" | grep -q "16 pages" && echo "✓ pdf" || { echo "✗ pdf"; fail=1; }
 exit $fail

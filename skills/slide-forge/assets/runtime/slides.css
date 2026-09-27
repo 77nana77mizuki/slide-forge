@@ -517,6 +517,185 @@ strong, b { font-weight: var(--w-strong); }
 .mk-note li::before { content: "・"; color: var(--accent-ink); }
 .mk-app .mk-callout { font-size: max(24px, 1.05em); }
 
+/* 5o. charts & diagrams — scripts/mock_chart.py / mock_diagram.py (data-mock="chart|arch|seq|japan").
+   Same em geometry as 5m: the root carries --mk-font; only text spans change their own size. */
+.mk-chart, .mk-diagram { position: relative; font-size: var(--mk-font, 24px); line-height: 1.3; flex-shrink: 0; }
+.mk-chart > *, .mk-diagram > *, .ch-ann > *, .dg-e > * { position: absolute; }
+.ch-ann, .dg-e { left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; }
+.ch-svg, .dg-svg { left: 0; top: 0; overflow: visible; pointer-events: none; }
+.mk-chart { --s0: var(--accent); --s1: color-mix(in srgb, var(--fg) 38%, var(--bg)); --s2: var(--accent-2); --s3: color-mix(in srgb, var(--accent) 45%, var(--bg)); }
+.ch-grid { stroke: var(--line); stroke-width: .045; }
+.ch-grid.ch-base { stroke: var(--muted); stroke-width: .07; }
+.ch-tick { transform: translateY(-50%); color: var(--muted); font-size: max(20px, .85em); white-space: nowrap; font-variant-numeric: tabular-nums; text-align: right; }
+.ch-tick-x, .ch-cat { transform: translateX(-50%); text-align: center; }
+.ch-cat { color: var(--fg); font-size: max(20px, .9em); white-space: nowrap; }
+.ch-cat.hl { color: var(--accent-ink); font-weight: 700; }
+.ch-cat-y { transform: translateY(-50%); text-align: right; }
+.ch-bar { background: var(--s0); border-radius: .16em .16em 0 0; }
+.ch-bar.ch-h { border-radius: 0 .16em .16em 0; }
+.ch-bar.s1 { background: var(--s1); } .ch-bar.s2 { background: var(--s2); } .ch-bar.s3 { background: var(--s3); }
+.ch-bar.muted { background: color-mix(in srgb, var(--muted) 38%, var(--bg)); }
+.ch-val { transform: translate(-50%, -100%); padding-bottom: .15em; font-weight: 700; font-size: max(20px, .85em); white-space: nowrap; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.ch-val-h { transform: translateY(-50%); padding: 0 0 0 .35em; }
+.ch-val.muted { color: var(--muted); font-weight: 400; }
+.ch-val.hl { color: var(--accent-ink); font-size: max(22px, 1em); }
+.ch-fade { transition: opacity 500ms var(--ease-out) calc(900ms + var(--i, 0) * 70ms); }
+:is([data-anim], .slide):not(.is-in, .is-played) .ch-fade { opacity: 0; }
+.ch-grow { transform-origin: 50% 100%; transition: scale 900ms var(--ease-out) calc(250ms + var(--i, 0) * 70ms); }
+.ch-h.ch-grow { transform-origin: 0 50%; }
+.ch-pt.ch-grow { transform-origin: 50% 50%; }
+:is([data-anim], .slide):not(.is-in, .is-played) .ch-bar.ch-grow { scale: 1 0; }
+:is([data-anim], .slide):not(.is-in, .is-played) .ch-h.ch-grow { scale: 0 1; }
+:is([data-anim], .slide):not(.is-in, .is-played) .ch-pt.ch-grow { scale: 0; }
+.ch-line { fill: none; stroke: var(--s0); stroke-width: .14; stroke-linejoin: round; stroke-linecap: round; }
+.ch-line.s1 { stroke: var(--s1); stroke-width: .1; } .ch-line.s2 { stroke: var(--s2); } .ch-line.s3 { stroke: var(--s3); }
+.ch-area { fill: color-mix(in srgb, var(--accent) 16%, transparent); stroke: none; }
+.ch-dot { fill: var(--s0); } .ch-dot.s1 { fill: var(--s1); } .ch-dot.s2 { fill: var(--s2); } .ch-dot.s3 { fill: var(--s3); }
+.ch-end { transform: translateY(-50%); font-weight: 700; white-space: nowrap; color: var(--accent-ink); font-size: max(20px, .9em); }
+.ch-end.s1 { color: var(--muted); } .ch-end.s2 { color: var(--accent-2); }
+.ch-pt { width: .7em; height: .7em; margin: -.35em 0 0 -.35em; border-radius: 50%; background: var(--s0); opacity: .9; }
+.ch-pt.s1 { background: var(--s1); } .ch-pt.s2 { background: var(--s2); }
+.ch-ptl { transform: translateY(-50%); font-size: max(20px, .8em); color: var(--muted); white-space: nowrap; }
+.ch-axis-title { font-size: max(20px, .8em); color: var(--muted); white-space: nowrap; }
+.ch-target { stroke: var(--accent); stroke-width: .08; stroke-dasharray: .32 .22; }
+.ch-band { background: color-mix(in srgb, var(--accent) 10%, transparent); border-left: 2px dashed color-mix(in srgb, var(--accent) 50%, transparent); border-right: 2px dashed color-mix(in srgb, var(--accent) 50%, transparent); }
+.ch-ring { fill: none; stroke: var(--accent); stroke-width: .1; }
+.ch-leader { stroke: var(--accent); stroke-width: .07; }
+.ch-ann-label { white-space: nowrap; font-weight: 700; color: var(--accent-ink); font-size: max(20px, .85em); line-height: 1.3; }
+.ch-callout { transform: translate(-50%, -50%); background: var(--accent); color: var(--on-accent); padding: .2em .65em; border-radius: .4em; box-shadow: 0 .3em .9em rgba(0, 0, 0, .18); }
+.ch-legend { right: 0; top: 0; display: flex; gap: 1.2em; font-size: max(20px, .85em); white-space: nowrap; }
+.ch-legend span { display: inline-flex; align-items: center; gap: .4em; }
+.ch-legend span::before { content: ""; width: .9em; height: .9em; border-radius: .2em; background: var(--s0); }
+.ch-legend .s1::before { background: var(--s1); } .ch-legend .s2::before { background: var(--s2); } .ch-legend .s3::before { background: var(--s3); }
+
+/* architecture / sequence */
+.dg-edge { fill: none; stroke: var(--muted); stroke-width: .08; stroke-linecap: round; stroke-linejoin: round; }
+.dg-edge.dashed { stroke-dasharray: .3 .22; }
+.dg-head { fill: var(--muted); }
+.dg-life { stroke: var(--line); stroke-width: .07; stroke-dasharray: .25 .25; }
+.dg-node { box-sizing: border-box; display: flex; align-items: center; gap: .55em; padding: 0 .8em; z-index: 1;
+  background: var(--surface); border: 2px solid var(--line); border-radius: .55em; box-shadow: 0 .3em 1em color-mix(in srgb, var(--fg) 9%, transparent); --solid: 1; }
+.dg-node .ico { font-size: 1.6em; color: var(--accent-ink); flex-shrink: 0; }
+.dg-ntext { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; }
+.dg-ntext b { font-weight: 700; white-space: nowrap; }
+.dg-ntext small { color: var(--muted); font-size: max(20px, .8em); white-space: nowrap; }
+.dg-db { border-radius: .55em / 1em; background: linear-gradient(var(--surface-2) 0 .5em, var(--surface) .5em); }
+.dg-user { border-radius: 2em; }
+.dg-ext { border-style: dashed; background: transparent; box-shadow: none; }
+.dg-node.hl { border-color: var(--accent); box-shadow: 0 0 0 .2em color-mix(in srgb, var(--accent) 22%, transparent); }
+.dg-actor { justify-content: center; background: var(--surface-2); }
+.dg-elabel, .dg-mlabel { transform: translate(-50%, -50%); white-space: nowrap; font-size: max(20px, .8em); z-index: 2; line-height: 1.3; }
+.dg-elabel { background: var(--bg); color: var(--muted); padding: 0 .35em; border-radius: .3em; }
+.dg-mlabel { font-weight: 600; background: var(--bg); padding: 0 .3em; }
+/* data packets travelling along edges (offset-path is in px: the generator multiplies em × --mk-font) */
+.dg-pkt { left: 0; top: 0; width: .55em; height: .55em; border-radius: 50%; background: var(--accent); z-index: 3;
+  box-shadow: 0 0 .5em var(--accent); offset-rotate: 0deg; offset-anchor: 50% 50%; offset-distance: 0%; opacity: 0; }
+.slide.is-active :is(.dg-e.is-in, .dg-e:not([data-anim])) .dg-pkt:not(.once) { animation: dg-flow 2.2s linear 1s infinite; }
+.slide.is-active .dg-e.is-in .dg-pkt.once { animation: dg-flow 1s var(--ease-in-out) .35s 1 both; }
+@keyframes dg-flow { 0% { offset-distance: 0%; opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+
+/* Japan tile map */
+.jp-tile { display: grid; place-items: center; border-radius: .3em; background: color-mix(in srgb, var(--fg) 7%, var(--bg)); color: var(--muted);
+  font-size: max(20px, .9em); line-height: 1; white-space: nowrap; }
+.jp-v { background: color-mix(in srgb, var(--accent) calc(var(--lv) * 100%), color-mix(in srgb, var(--fg) 7%, var(--bg))); color: var(--fg); }
+.jp-v.dark { font-weight: 700; }   /* ink colour is picked per tile by slides-fx.js (best contrast) */
+.jp-tile.hl { box-shadow: 0 0 0 .16em var(--bg), 0 0 0 .3em var(--fg); z-index: 2; font-weight: 800; }
+.jp-legend { display: flex; align-items: center; gap: .5em; font-size: max(20px, .85em); color: var(--muted); white-space: nowrap; }
+.jp-scale { display: inline-flex; gap: .15em; }
+.jp-scale i { display: block; width: 1.5em; height: .8em; border-radius: .15em; background: color-mix(in srgb, var(--accent) calc(var(--lv) * 100%), color-mix(in srgb, var(--fg) 7%, var(--bg))); }
+.jp-title { font-weight: 700; font-size: 1.2em; white-space: nowrap; }
+.mk-diagram .mk-callout { font-size: max(22px, 1em); }
+
+/* 5p. bento grid — <div class="bento"> with children sized by --c / --r (columns / rows spanned) */
+.bento { display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); gap: var(--bento-gap, 24px); flex: 1; min-height: 0; }
+.bento > * { grid-column: span var(--c, 1); grid-row: span var(--r, 1); position: relative; overflow: hidden; min-width: 0; min-height: 0;
+  display: flex; flex-direction: column; gap: 10px; padding: 30px 34px; border-radius: var(--radius);
+  background: var(--surface); border: 1px solid var(--line); }
+.bento > .accent { background: var(--accent); color: var(--on-accent); border-color: transparent; --muted: color-mix(in srgb, var(--on-accent) 75%, transparent); }
+.bento > .dark { background: var(--inv-bg); color: var(--inv-fg); border-color: transparent; --muted: var(--inv-muted); --accent-ink: var(--inv-accent); }
+.bento .b-kicker { font-size: var(--fs-label); letter-spacing: .08em; color: var(--muted); font-weight: 700; }
+.bento .b-title { font-family: var(--font-head); font-weight: var(--w-head); font-size: var(--fs-h3); line-height: 1.25; margin: 0; }
+.bento .b-num { font-family: var(--font-num); font-weight: 800; font-size: 104px; line-height: 1; letter-spacing: -.02em; color: var(--accent-ink); }
+.bento .accent .b-num, .bento .dark .b-num { color: inherit; }
+.bento .b-num small { font-size: .4em; margin-left: .1em; }
+.bento .b-text { font-size: var(--fs-small); line-height: 1.55; color: var(--muted); margin: 0; }
+.bento .b-foot { margin-top: auto; }
+.bento .b-art { position: absolute; right: -18px; bottom: -22px; font-size: 200px; line-height: 1; opacity: .14; pointer-events: none; color: currentColor; }
+.bento .b-art svg { width: 1em; height: 1em; }
+.bento .b-media { margin: -30px -34px 0; flex: 1; min-height: 0; overflow: hidden; }
+.bento .b-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* border beam (after Magic UI's MIT "Border Beam"): a light running around the card's edge */
+@property --beam { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+.bento > .beam::after, .beam-box::after { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 3px; pointer-events: none;
+  background: conic-gradient(from var(--beam), transparent 0 72%, var(--accent) 86%, color-mix(in srgb, var(--accent) 30%, #fff) 92%, transparent 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: sf-beam 5s linear infinite; }
+.beam-box { position: relative; }
+@keyframes sf-beam { to { --beam: 360deg; } }
+.L-bento { gap: 36px; }
+
+/* 5q. zoom canvas — .zoom-view (the window) > .zoom-canvas (a big board) > [data-zoom] regions. slides-fx.js moves the camera. */
+.zoom-view { position: relative; flex: 1; min-height: 0; overflow: hidden; border-radius: var(--radius); background: var(--surface-2); }
+.zoom-canvas { position: absolute; left: 0; top: 0; width: 3840px; height: 2160px; transform-origin: 0 0; will-change: transform; }
+.zoom-canvas > * { position: absolute; }
+.zoom-canvas [data-zoom] { transition: opacity 600ms var(--ease-out); }
+.zoom-view.is-zoomed [data-zoom].is-dim { opacity: .28; }
+.zoom-detail { opacity: 0; transition: opacity 500ms var(--ease-out) 700ms; }
+[data-zoom].is-focus .zoom-detail { opacity: 1; }
+.zoom-region { box-sizing: border-box; padding: 48px 56px; border-radius: 28px; background: var(--surface); border: 2px solid var(--line);
+  display: flex; flex-direction: column; gap: 16px; box-shadow: 0 20px 50px -30px rgba(0, 0, 0, .35); }
+.zoom-region.is-focus { border-color: var(--accent); }
+.zoom-region h3 { margin: 0; font-family: var(--font-head); font-weight: var(--w-head); font-size: 72px; line-height: 1.2; }
+.zoom-region .zoom-no { font: 700 30px var(--font-mono); color: var(--accent-ink); letter-spacing: .1em; }
+.zoom-link { stroke: var(--muted); stroke-width: 6; fill: none; stroke-dasharray: 18 14; }
+.slide.L-zoom { padding: 0; }
+.L-zoom > .zoom-view { position: absolute; inset: 0; border-radius: 0; background: var(--bg); z-index: 0; }
+.L-zoom > .headline, .L-zoom > .kicker { position: absolute; left: var(--pad-x); z-index: 2; margin: 0; }
+.L-zoom > .kicker { top: 64px; } .L-zoom > .headline { top: 104px; font-size: var(--fs-h3); max-width: 60%; }
+
+/* 5r. before/after slider — .ba-slider > (before, after); drag, or data-stops="20,80" → one position per click */
+@property --pos { syntax: "<percentage>"; inherits: true; initial-value: 50%; }
+.ba-slider { position: relative; display: grid; overflow: hidden; border-radius: var(--radius); cursor: ew-resize; touch-action: none; user-select: none;
+  transition: --pos 1100ms var(--ease-in-out); isolation: isolate; }
+.ba-slider.is-drag { transition: none; }
+.ba-slider > .cmp-before, .ba-slider > .cmp-after { grid-area: 1 / 1; min-width: 0; min-height: 0; }
+.ba-slider > .cmp-after { clip-path: inset(0 0 0 var(--pos)); }
+.ba-slider img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cmp-handle { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 0; z-index: 3; pointer-events: none; }
+.cmp-handle::before { content: ""; position: absolute; top: 0; bottom: 0; left: -2px; width: 4px; background: var(--cmp-line, #fff); box-shadow: 0 0 0 1px rgba(0, 0, 0, .25), 0 0 18px rgba(0, 0, 0, .3); }
+.cmp-handle i { position: absolute; top: 50%; left: 0; width: 64px; height: 64px; transform: translate(-50%, -50%); border-radius: 50%;
+  background: var(--cmp-line, #fff); box-shadow: 0 6px 20px rgba(0, 0, 0, .3); }
+.cmp-handle i::before, .cmp-handle i::after { content: ""; position: absolute; top: 50%; border: 10px solid transparent; margin-top: -10px; }
+.cmp-handle i::before { left: 6px; border-right-color: #333; } .cmp-handle i::after { right: 6px; border-left-color: #333; }
+.cmp-label { position: absolute; top: 24px; z-index: 4; font: 700 24px/1 var(--font-body); padding: 10px 16px; border-radius: 999px; background: #1f2430; color: #fff; letter-spacing: .06em; pointer-events: none; }
+.cmp-label-before { left: 24px; } .cmp-label-after { right: 24px; background: var(--accent); color: var(--on-accent); }
+
+/* 5s. code move — .code[data-codemove] > pre[data-v] per version; tokens glide between versions */
+.codemove { position: relative; }
+.codemove .cm-view { display: block; position: relative; font: inherit; white-space: pre; background: none; padding: 0; border: 0; border-radius: 0; color: inherit; }
+.codemove .t { display: inline-block; white-space: pre; }
+.codemove .cm-ghost { position: absolute; line-height: normal; pointer-events: none; }
+.codemove .ln { transition: opacity 500ms; }
+.cm-file { display: inline-block; margin: -20px 0 22px; padding: 6px 18px; border-radius: 10px; background: rgba(255, 255, 255, .08); color: #b9c0cc; font-size: 24px; }
+
+/* 5t. hand-drawn annotations — data-annotate="underline|circle|box|highlight|strike|cross|bracket" (drawn by slides-fx.js) */
+.sf-annotated { position: relative; }
+.sf-annotated-highlight { isolation: isolate; }
+.sf-annot { position: absolute; overflow: visible; pointer-events: none; z-index: 2; }
+.sf-annot path { fill: none; stroke: var(--annot, var(--accent)); stroke-width: var(--sw, 4px); stroke-linecap: round; stroke-linejoin: round; }
+.sf-annot-highlight { z-index: -1; }
+.sf-annot-highlight path { stroke: color-mix(in srgb, var(--annot, var(--accent)) 38%, transparent); stroke-linecap: butt; }
+.sf-annot[data-anim="draw"] { --d: 420ms; }
+
+/* 5u. 3D — [data-3d="globe|model|shape"] (three.js, bundled only when a deck uses it) */
+[data-3d] { position: relative; min-height: 200px; }
+.sf-3d-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.sf-3d-label { position: absolute; transform: translate(14px, -50%); z-index: 2; white-space: nowrap; font-weight: 700; font-size: 24px; line-height: 1.3;
+  padding: 4px 12px; border-radius: 8px; background: color-mix(in srgb, var(--bg) 86%, transparent); color: var(--fg); pointer-events: none; transition: opacity .3s; }
+.sf-3d-label.is-back { opacity: 0; }
+.sf-3d-fail::after { content: "3D preview unavailable (WebGL)"; position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: 24px; }
+.sf-mark { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+
 /* === 6. MOTION ===
    data-anim="up|down|from-left|from-right|fade|scale|zoom|blur|wipe|wipe-up|draw|mark|chars|pop"
    The runtime adds .is-in when the element should be visible (slide entered or step reached).
@@ -553,6 +732,25 @@ strong, b { font-weight: var(--w-strong); }
 [data-anim="draw"]:not(.is-in) { opacity: 1; }
 [data-anim="draw"] :is(path, line, polyline, circle, rect, polygon) { transition: stroke-dashoffset calc(var(--d) * 2) var(--ease-in-out) var(--delay); }
 [data-anim="draw"]:not(.is-in) :is(path, line, polyline, circle, rect, polygon) { stroke-dashoffset: var(--len, 2000) !important; }
+/* kinetic text (v1.7) — words / mask / type / scramble are split or driven by slides-fx.js */
+[data-anim="slam"] { transition-timing-function: cubic-bezier(.2, 1.5, .4, 1); }
+[data-anim="slam"]:not(.is-in) { transform: scale(2.3); filter: blur(12px); }
+[data-anim="tracking"] { transition: opacity var(--d) var(--ease-out) var(--delay), letter-spacing calc(var(--d) * 1.8) var(--ease-out) var(--delay), filter var(--d) var(--ease-out) var(--delay); }
+[data-anim="tracking"]:not(.is-in) { letter-spacing: .6em; filter: blur(10px); }
+[data-anim="words"]:not(.is-in), [data-anim="mask"]:not(.is-in), [data-anim="type"]:not(.is-in), [data-anim="scramble"]:not(.is-in) { opacity: 1; }
+[data-anim="scramble"]:not(.is-in) { visibility: hidden; }
+[data-anim="words"] .sf-w { display: inline-block; transition: opacity var(--d) var(--ease-out), transform var(--d) var(--ease-out), filter var(--d) var(--ease-out);
+  transition-delay: calc(var(--delay) + var(--k) * var(--word-gap, 70ms)); }
+[data-anim="words"]:not(.is-in) .sf-w { opacity: 0; transform: translateY(.4em); filter: blur(5px); }
+[data-anim="mask"] .sf-w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .06em; margin-bottom: -.06em; }
+[data-anim="mask"] .sf-wi { display: inline-block; transition: transform calc(var(--d) * 1.25) var(--ease-out) calc(var(--delay) + var(--line, 0) * 140ms); }
+[data-anim="mask"]:not(.is-in) .sf-wi { transform: translateY(110%); }
+[data-anim="type"] .sf-c { transition: visibility 0s linear calc(var(--delay) + var(--k) * var(--type-gap, 55ms)); }
+[data-anim="type"]:not(.is-in) .sf-c { visibility: hidden; transition-delay: 0s; }
+[data-anim="type"]::after { content: ""; display: inline-block; width: .08em; height: 1em; margin-left: .06em; vertical-align: -.12em; background: var(--accent);
+  animation: sf-caret 1s steps(1) infinite; }
+[data-anim="type"].is-past::after, html.is-export [data-anim="type"]::after { display: none; }
+@keyframes sf-caret { 50% { opacity: 0; } }
 /* charts animate themselves when their container is in */
 .bar .fill, .col-bar .fill { transition: transform 1100ms var(--ease-out) var(--bar-delay, 0ms); }
 :is([data-anim], .slide):not(.is-in, .is-played) .bar .fill { transform: scaleX(0); }
@@ -564,7 +762,7 @@ strong, b { font-weight: var(--w-strong); }
 
 /* instant state changes (going back, jumping, export) */
 .sf-instant [data-anim], .sf-instant [data-anim] *, .sf-instant .bar .fill, .sf-instant .col-bar .fill,
-.sf-instant .donut, .sf-instant .flow .arrow::before { transition: none !important; }
+.sf-instant .donut, .sf-instant .flow .arrow::before, .sf-instant .ch-grow, .sf-instant .ch-fade, .sf-instant .ba-slider { transition: none !important; }
 
 /* View Transitions between slides (html[data-vt] picks the flavour) */
 ::view-transition-group(*) { animation-duration: var(--vt-dur); animation-timing-function: var(--ease-out); }
@@ -637,6 +835,10 @@ html.is-export .slide { position: relative; visibility: visible; opacity: 1; wid
 html.is-export .deck-chrome.is-global, html.is-export .deck-hud, html.is-export .deck-help { display: none !important; }
 html.is-export [data-anim], html.is-export [data-anim] * { transition: none !important; }
 html.is-export [data-step] { opacity: 1 !important; }
+html.is-export .sf-mark { opacity: 0 !important; }
+html.is-export .dg-pkt, html.is-export .cmp-handle i { display: none; }
+html.is-export .ch-grow, html.is-export .ch-fade, html.is-export .ba-slider { transition: none !important; }
+html.is-export .beam::after, html.is-export .beam-box::after { animation: none; --beam: 200deg; }
 @media print {
   @page { size: 1920px 1080px; margin: 0; }
   html, body { overflow: visible !important; height: auto !important; background: none !important; }
@@ -650,10 +852,16 @@ html.is-export [data-step] { opacity: 1 !important; }
   .col-bar .fill { transform: none !important; }
   .bar .fill { transform: scaleX(var(--v)) !important; }
   .donut { --p: var(--v) !important; }
+  .ch-grow { scale: none !important; }
+  .dg-pkt { display: none !important; }
+  [data-anim="scramble"] { visibility: visible !important; }
+  [data-anim] .sf-c { visibility: visible !important; }
 }
 
 /* === 10. REDUCED MOTION — final states, no travel === */
 @media (prefers-reduced-motion: reduce) {
-  [data-anim], [data-anim] *, .bar .fill, .col-bar .fill, .donut { transition-duration: 1ms !important; transition-delay: 0ms !important; }
+  [data-anim], [data-anim] *, .bar .fill, .col-bar .fill, .donut, .ch-grow, .ch-fade, .ba-slider { transition-duration: 1ms !important; transition-delay: 0ms !important; }
+  .dg-pkt { display: none; }
+  .beam::after, .beam-box::after, [data-anim="type"]::after { animation: none !important; }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }

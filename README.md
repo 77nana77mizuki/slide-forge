@@ -31,6 +31,7 @@ Claude に「発表資料を作って」と頼むだけで、**構成設計 → 
 - **モーショングラフィック**: 動きの性格を 3 プリセット（calm / lively / punchy）で統一。日本語を文節単位で動かすキネティックタイポ 9 種（rise・mask・pop・slam・blur・type・tracking・scramble・shimmer）と手描き風マーカー、数字＋リング、線が伸びる手順図、横棒グラフ、Lottie、背景 6 種、遷移 20 種＋光漏れ。1 シーンのコマ撮り確認と点滅検査（WCAG 2.3.1）付き。Web の動きのカタログ（Magic UI・Motion Primitives・Anime.js など）は見た目だけ参考にし、コマ単位で決まる形に作り直してある。CC0 の素材（3dicons・Kitbitz）は `video.py add --license CC0` で許諾を記録して使える
 - **データベース図・画面イメージ（v1.5）**: JSON を書くだけで、テーブルと関連の図（PK/FK・例データ・線が描かれるアニメーション）と、表計算ソフトで開いた出力ファイルの画面（列記号・行番号・シートタブ・セルを指す吹き出し）を生成。旧・新の CSV を渡すと新規／更新／削除を突き合わせ、旧データはグレー・新データはグリーン・変わったセルは赤で自動表示。システム提案・ヒアリング資料向け
 - **Web アプリ・スマホの画面イメージ（v1.6）**: ブラウザ（タブ・アドレスバー・メニュー）かスマホの枠に、KPI・折れ線・棒・ドーナツ・一覧・進捗・ガント・表・フォームのパネルを JSON で配置。画面の左右に「管理者画面」「利用者の声」などの注記カードを置き、パネルまで引き出し線を自動で引く。要件ヒアリング資料向け
+- **表現の拡張（v1.7）**: 目標線・吹き出し・期間帯・強調を書き込めるグラフ（棒・横棒・折れ線・面・散布図）と、スライドをまたいで棒が並べ替わるグラフのモーフ / Prezi 風のズームキャンバス（全体図からクリックごとに寄る）/ 手描き風の丸・下線・囲み・蛍光ペン / 版ごとにトークンが滑って変わるコード / 線の上をデータの粒が流れる構成図とシーケンス図 / ベントーグリッド（縁を光が回るタイル）/ ドラッグできる前後比較スライダー / 47 都道府県のタイル地図 / 動画用だったキネティック文字（mask・words・type・scramble・slam・tracking）/ three.js の地球儀（都市と弧）・3D モデル（.glb）・立体
 - **品質保証**: レンダリング後の自動検査（16 種。写真上の文字は実際の描画ピクセルでコントラストを計測）＋スクリーンショットの一覧画像＋アニメーションのコマ撮り＋独立レビュアー
 
 ## 設計の根拠（2026 年時点の調査）
@@ -52,6 +53,22 @@ Claude に「発表資料を作って」と頼むだけで、**構成設計 → 
 | `tests/` `evals/` | 回帰テスト（`tests/run_all.sh`）と評価 |
 
 ## 変更履歴
+### v1.7（2026-09-27）
+- **表現力の強化 10 種**（`references/expressive.md`、実例 `assets/examples/fx/fx.src.html`）
+  1. 注釈付きグラフ `data-mock="chart"`（`scripts/mock_chart.py`）: bar / hbar / line / area / scatter、`highlight`・`sort`・`top`、注釈 target / band / point / note、系列をクリックで追加。同じ `id` のグラフを並べると棒と値がモーフ
+  2. ズームキャンバス（`L-zoom`・`.zoom-view`）: `data-zoom` の順にカメラが寄り、領域間は少し引いて移動。寄ったときだけ出る `.zoom-detail`
+  3. 手描きの注釈 `data-annotate`（underline / circle / box / highlight / strike / cross / bracket）: 揺れは文字列から決まるので毎回同じ形。クリックで描ける
+  4. コードの変化 `data-codemove`: 版の間で共通トークンを LCS で対応づけ、FLIP で移動・追加分だけフェード。自動の色分け・行強調・ファイル名タブ
+  5. 構成図 `arch` と シーケンス図 `seq`（`scripts/mock_diagram.py`）: 自動配線（直線／L 字・往復のずらし）、線の上を流れるデータの粒（offset-path）、クリックで段階表示
+  6. ベントーグリッド（`L-bento`・`.bento`）と Border Beam（Magic UI〔MIT〕の考え方）
+  7. 前後比較スライダー `.ba-slider`: 入場時に掃く・クリックで指定位置へ・ドラッグ可
+  8. 日本のタイル地図 `data-mock="japan"`: 値の濃淡（文字色は自動で読みやすい方）、強調、ピン
+  9. キネティック文字 `data-anim="mask|words|type|scramble|slam|tracking"`（日本語は Intl.Segmenter で単語分割）
+  10. 3D `data-3d="globe|model|shape"`: three.js r186（MIT）を使うデッキだけに同梱。陸地ドットは Natural Earth（パブリックドメイン）から作ったマスク。表示中のスライドだけ描画、PDF は静止 1 コマ
+- ランタイム: `slides-fx.js` を追加（slides.js より前に読み込み、クリック連動の状態を見えないステップマーカーで管理）。slides.js は `deck:layout` イベント（フォント・自動縮小の確定後）を発行し、E 編集の保存時に効果の DOM を取り除く
+- check: ズームキャンバス・比較スライダー・グラフ／図の中の判定を調整。build: 新しいアニメ名・`data-annotate`・`data-3d` の lint、`.glb` の埋め込み、three.js の条件付き同梱
+- テスト: `tests/test_fx.py`（ズーム・コード・スライダー・注釈・3D・書き出しの最終状態）を `run_all.sh` に追加。7 テーマすべてで fx デッキのエラー 0
+
 ### v1.6（2026-09-27）
 - **Web アプリ・スマホの画面イメージ**を追加（`data-mock="app"`、`scripts/mock_app.py`、`references/layouts.md` §8、実例 `assets/examples/mock/app.src.html`）
   - ブラウザ（タブ・アドレスバー・URL・左メニュー・ヘッダー）とスマホ（ノッチ・ステータスバー・下タブ）の枠

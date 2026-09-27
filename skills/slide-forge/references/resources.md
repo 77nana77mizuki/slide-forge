@@ -27,7 +27,7 @@
 MIT のもの（Magic UI・Motion Primitives・Anime.js）は既存の属性で代用できる場合でも、**見せたい効果そのものが部品にあるなら移植して使ってよい**（手順は §5）。
 | 資源 | ライセンス | スライドでの対応（既存の部品で作る） |
 |---|---|---|
-| Magic UI (magicui.design) | MIT | Number Ticker → `data-count`／Text Animate・Blur Fade → `data-anim="up"` `blur` `chars` と `data-stagger`／Highlighter → `data-anim="mark"`／Animated Beam・線 → `data-anim="draw"`（SVG の線描画）／Dot Pattern・Grid → テーマの背景 |
+| Magic UI (magicui.design) | MIT | Number Ticker → `data-count`／Text Animate・Blur Fade → `data-anim="up"` `blur` `words` `mask` と `data-stagger`／Highlighter → `data-anim="mark"` か `data-annotate`／Animated Beam → 構成図 `arch` の流れる粒／Bento Grid → `L-bento`／Border Beam → `.beam`／Hyper Text → `data-anim="scramble"`／Globe → `data-3d="globe"`／Dot Pattern・Grid → テーマの背景（v1.7 で組み込み済み。expressive.md） |
 | Motion Primitives (motion-primitives.com) | MIT | Text Effect（文字・単語ごと）→ `data-anim="chars"` / `data-stagger`／Animated Number → `data-count`／Transition Panel → `data-morph`（マジックムーブ） |
 | Aceternity UI (ui.aceternity.com) | サイトの規約に従う | スポットライト・グラデーションの光 → 表紙の背景演出の発想元（デッキ CSS で控えめに） |
 | Kinetics (kinetics.colorion.co) | 表記なし → **見るだけ** | ばねの効いた小さな反応。スライドでは「クリックで出す `data-step` の着地感」の調整の参考 |
@@ -102,3 +102,8 @@ npm pack animejs && tar xzf animejs-*.tgz        # MIT → package/dist/bundles/
 | ソコスト (soco-st.com) | 商用可・クレジット不要・点数制限なし・色やサイズの加工可（顔パーツの改変は不可）。直リンク禁止。**AI 学習・画像生成の参照、生成 AI へのアップロードで別の画像を作ることは禁止** | ユーザーが自分でダウンロードして添付した場合のみ、**そのまま配置**（サイズ・色・動き）。それを元に絵を描く・生成するのは不可。Claude から自動取得しない（サイトもシェルから遮断される）。気になる場合は運営に確認を勧める |
 | いらすとや | 商用は点数制限あり等、規約が個別 | ユーザーが用意したものを `assets.py add … --license "…" --source-url …` |
 - 記録例: `assets.py add img/x.svg --license "ソコスト利用規約" --source-url https://soco-st.com/guide`（クレジット表示は不要なので `"credits": "off"` でよい）
+
+### 同梱しているサードパーティ（v1.7）
+- three.js r186 ＋ GLTFLoader（MIT, `assets/vendor/three-sf.min.js`, 許諾文 `assets/vendor/LICENSE-three.txt`）— `data-3d` を使うデッキにだけ build が同梱
+- 地球儀の陸地マスク: Natural Earth 1:110m land（パブリックドメイン）を world-atlas（ISC）経由で 240×120 のビットマップにしたもの（`slides-fx.js` に埋め込み）
+

@@ -1,0 +1,314 @@
+<script type="application/json" id="deck-config">
+{
+  "title": "配送プラットフォーム刷新 — 表現力ショーケース",
+  "description": "Slide Forge v1.7 の表現（注釈付きグラフ・グラフの変形・ズームキャンバス・手描き注釈・コードの変化・データが流れる構成図・ベントー・比較スライダー・日本地図・キネティック文字・3D）をまとめたサンプル",
+  "author": "Slide Forge",
+  "lang": "ja",
+  "theme": "signal",
+  "transition": "fade",
+  "footer": "配送プラットフォーム刷新（架空の事例）",
+  "density": "speaker",
+  "credits": "off"
+}
+</script>
+
+<style>
+  .center { display: grid; place-items: center; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .globe-wrap { display: grid; grid-template-columns: 620px 1fr; gap: 40px; align-items: center; }
+  .globe { height: 760px; }
+  .gem { height: 620px; }
+  .cmp-wrap { width: fit-content; margin: 0 auto; }
+</style>
+
+<!-- 1 ─ タイトル: mask + words -->
+<section class="slide L-title">
+  <div class="kicker" data-anim="tracking">Slide Forge v1.7 · Expressive</div>
+  <h1 class="hero" data-anim="mask">配送プラットフォームを、<br>作り直す。</h1>
+  <p class="lede" data-anim="words" data-delay="700">数字・構造・変化を「動き」で見せる 10 の表現</p>
+  <aside class="notes">架空の配送会社の刷新プロジェクトを題材に、v1.7 で増えた表現を順に見せます。</aside>
+</section>
+
+<!-- 2 ─ 主張: slam + scramble -->
+<section class="slide L-statement">
+  <p class="kicker" data-anim="fade">いま起きていること</p>
+  <p class="statement"><span data-anim="slam" data-delay="200">再配達率</span> <span class="accent" data-anim="scramble" data-delay="700">18.4%</span></p>
+  <p class="lede" data-anim="up" data-delay="1500">5 件に 1 件が、2 回目の配達になっている</p>
+  <aside class="notes">数字はスクランブルから確定させると「計測値」らしく見えます。</aside>
+</section>
+
+<!-- 3 ─ 注釈付きグラフ + 手描き注釈 -->
+<section class="slide L-free">
+  <div class="kicker" data-anim="fade">Chart · annotations</div>
+  <h2 class="headline" data-anim="up">再配達は <span data-annotate="circle" data-annotate-step>8 月</span> に跳ね上がった</h2>
+  <div class="center grow">
+    <script type="application/json" data-mock="chart">
+    { "type": "bar", "font": 24, "w": 64, "h": 20, "unit": "%",
+      "labels": ["4月", "5月", "6月", "7月", "8月", "9月"],
+      "series": [ {"name": "再配達率", "values": [12.1, 12.8, 13.5, 14.2, 18.4, 16.9]} ],
+      "highlight": ["8月"], "max": 24,
+      "annotations": [
+        {"type": "target", "value": 10, "label": "目標 10%"},
+        {"type": "point", "at": "8月", "label": "猛暑で在宅率が低下", "dy": -2.2, "dx": -7, "step": true}
+      ] }
+    </script>
+  </div>
+  <aside class="notes">まず全体、次にクリックで原因の吹き出し、最後に見出しの「8 月」を手描きの丸で囲みます。</aside>
+</section>
+
+<!-- 4 ─ グラフの変形（1/2）: 並び順そのまま -->
+<section class="slide L-free" data-transition="morph">
+  <div class="kicker">Chart · morph</div>
+  <h2 class="headline">地域別の再配達件数（月次）</h2>
+  <div class="center grow">
+    <script type="application/json" data-mock="chart">
+    { "type": "hbar", "font": 24, "w": 60, "h": 19, "id": "area", "morph": true, "unit": "件",
+      "labels": ["北海道", "東北", "関東", "中部", "近畿", "中国", "四国", "九州"],
+      "series": [ {"values": [820, 640, 4210, 1980, 2630, 710, 380, 1560]} ] }
+    </script>
+  </div>
+  <aside class="notes">次のスライドで同じ棒が並べ替わります（View Transitions）。</aside>
+</section>
+
+<!-- 5 ─ グラフの変形（2/2）: 並べ替え + 上位 4 + 強調 -->
+<section class="slide L-free" data-transition="morph">
+  <div class="kicker">Chart · morph</div>
+  <h2 class="headline">上位 4 地域で全体の 8 割を占める</h2>
+  <div class="center grow">
+    <script type="application/json" data-mock="chart">
+    { "type": "hbar", "font": 24, "w": 60, "h": 19, "id": "area", "morph": true, "unit": "件",
+      "labels": ["北海道", "東北", "関東", "中部", "近畿", "中国", "四国", "九州"],
+      "series": [ {"values": [820, 640, 4210, 1980, 2630, 710, 380, 1560]} ],
+      "sort": "desc", "top": 4, "highlight": ["関東", "近畿"] }
+    </script>
+  </div>
+  <aside class="notes">棒は同じ要素として滑るので「並べ替えた」ことが伝わります。</aside>
+</section>
+
+<!-- 6 ─ 折れ線 + 期間帯 + 系列を 1 クリックずつ -->
+<section class="slide L-free">
+  <div class="kicker">Chart · line</div>
+  <h2 class="headline">置き配を始めた地域から、再配達が下がった</h2>
+  <div class="center grow">
+    <script type="application/json" data-mock="chart">
+    { "type": "line", "font": 24, "w": 64, "h": 19, "unit": "%",
+      "labels": ["4月", "5月", "6月", "7月", "8月", "9月"],
+      "series": [ {"name": "置き配あり", "values": [15.0, 14.6, 12.0, 10.4, 11.8, 9.6]},
+                  {"name": "置き配なし", "values": [14.2, 14.8, 15.3, 15.9, 19.6, 18.2]} ],
+      "series_steps": true, "max": 24,
+      "annotations": [ {"type": "band", "from": "6月", "to": "9月", "label": "置き配の試行", "step": true} ] }
+    </script>
+  </div>
+  <aside class="notes">最初に 1 本、クリックで比較対象、次に試行期間の帯。</aside>
+</section>
+
+<!-- 7 ─ ベントー -->
+<section class="slide L-bento">
+  <div class="kicker" data-anim="fade">Bento</div>
+  <h2 class="headline" data-anim="up">刷新で変わる 5 つのこと</h2>
+  <div class="bento" style="--cols:4" data-stagger="up">
+    <div class="accent beam" style="--c:2;--r:2">
+      <span class="b-kicker">再配達</span>
+      <span class="b-num" data-count>-40<small>%</small></span>
+      <p class="b-text">受け取り方法を事前に選べる</p>
+      <i class="b-art" data-icon="tabler:truck-delivery"></i>
+    </div>
+    <div><span class="b-kicker">通知</span><p class="b-title">到着 30 分前に通知</p></div>
+    <div><span class="b-kicker">置き配</span><p class="b-title">写真で完了報告</p></div>
+    <div class="dark" style="--c:2"><span class="b-kicker">ドライバー</span><p class="b-title">ルートを毎朝自動で組む</p><i class="b-art" data-icon="tabler:route"></i></div>
+    <div style="--c:4"><span class="b-kicker">運用</span><p class="b-title">問い合わせの 6 割をチャットで完結</p></div>
+  </div>
+  <aside class="notes">主役を大きく、補足を小さく。ボーダービームで主役に目線を集めます。</aside>
+</section>
+
+<!-- 8 ─ ズームキャンバス -->
+<section class="slide L-zoom" data-chrome="off">
+  <div class="zoom-view">
+    <div class="zoom-canvas" style="width:3840px;height:2160px">
+      <svg style="left:0;top:0;width:3840px;height:2160px" aria-hidden="true"><path class="zoom-link" d="M1150 1180 H1500 M2340 1180 H2690 M1920 1560 V1720"/></svg>
+      <div class="zoom-region" data-zoom="1" style="left:300px;top:760px;width:850px;height:800px">
+        <span class="zoom-no">01</span><h3>受付</h3><p>注文と配達希望を受け取る</p>
+        <p class="zoom-detail">置き配・宅配ボックス・日時指定を最初に聞く</p>
+      </div>
+      <div class="zoom-region" data-zoom="2" style="left:1500px;top:760px;width:840px;height:800px">
+        <span class="zoom-no">02</span><h3>配車</h3><p>ルートとドライバーを決める</p>
+        <p class="zoom-detail">毎朝 5 時に全件を再計算し、ドライバーの端末へ送る</p>
+      </div>
+      <div class="zoom-region" data-zoom="3" style="left:2690px;top:760px;width:850px;height:800px">
+        <span class="zoom-no">03</span><h3>配達</h3><p>到着前通知と完了報告</p>
+        <p class="zoom-detail">30 分前に通知、置き配は写真で完了</p>
+      </div>
+      <div class="zoom-region" data-zoom="4" style="left:1500px;top:1720px;width:840px;height:360px">
+        <h3>振り返り</h3><p>不在の理由を次の受付へ</p>
+      </div>
+      <div class="zoom-region" style="left:300px;top:200px;width:3240px;height:420px;background:transparent;border:0;box-shadow:none">
+        <span class="zoom-no">MAP</span><h3 style="font-size:150px">配送の 4 工程</h3>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">全体図から工程ごとに寄っていきます。寄ると詳しい説明が現れます。</aside>
+</section>
+
+<!-- 9 ─ コードの変化 -->
+<section class="slide L-code">
+  <div class="kicker">Code move</div>
+  <h2 class="headline">受け取り方法は、API に 1 引数足すだけ</h2>
+  <div class="code codemove" data-codemove data-lang="ts" data-file="delivery.ts">
+<pre data-v>
+const slot = await api.reserve(orderId, {
+  date: "2026-10-01",
+  time: "14-16",
+});
+</pre>
+<pre data-v data-hl="4">
+const slot = await api.reserve(orderId, {
+  date: "2026-10-01",
+  time: "14-16",
+  method: "box",
+});
+</pre>
+<pre data-v data-hl="1,5-6">
+const slot = await api.reserve(orderId, {
+  date: "2026-10-01",
+  time: "14-16",
+  method: "box",
+  notify: { minutesBefore: 30 },
+});
+</pre>
+  </div>
+  <aside class="notes">クリックごとにトークンが移動し、追加分だけがフェードインします。</aside>
+</section>
+
+<!-- 10 ─ 構成図（データが流れる） -->
+<section class="slide L-free">
+  <div class="kicker">Architecture</div>
+  <h2 class="headline">注文から配車まで、データはこう流れる</h2>
+  <div class="center grow">
+    <script type="application/json" data-mock="arch">
+    { "font": 22, "cell": [15, 6.4],
+      "nodes": [
+        {"id": "user", "label": "利用者", "sub": "アプリ / Web", "icon": "tabler:user", "x": 0, "y": 0, "kind": "user"},
+        {"id": "api", "label": "受付 API", "sub": "REST", "icon": "tabler:api", "x": 1, "y": 0, "hl": true},
+        {"id": "db", "label": "注文 DB", "sub": "PostgreSQL", "icon": "tabler:database", "x": 2, "y": 0, "kind": "db"},
+        {"id": "route", "label": "配車エンジン", "sub": "毎朝 5 時", "icon": "tabler:route", "x": 2, "y": 1, "step": 1},
+        {"id": "drv", "label": "ドライバー端末", "icon": "tabler:device-mobile", "x": 1, "y": 1, "step": 1},
+        {"id": "map", "label": "地図サービス", "sub": "外部", "icon": "tabler:map", "x": 3, "y": 1, "kind": "ext", "step": 2}
+      ],
+      "edges": [
+        {"from": "user", "to": "api", "label": "予約"},
+        {"from": "api", "to": "db", "label": "保存"},
+        {"from": "db", "to": "route", "step": 1},
+        {"from": "route", "to": "drv", "label": "ルート", "step": 1},
+        {"from": "route", "to": "map", "dashed": true, "flow": false, "step": 2}
+      ] }
+    </script>
+  </div>
+  <aside class="notes">光の粒がデータの流れ。クリックで配車側、外部サービスの順に足します。</aside>
+</section>
+
+<!-- 11 ─ シーケンス -->
+<section class="slide L-free">
+  <div class="kicker">Sequence</div>
+  <h2 class="headline">不在だったときのやりとり</h2>
+  <div class="center grow">
+    <script type="application/json" data-mock="seq">
+    { "font": 22, "gap": 15, "row": 2.5,
+      "actors": [ {"id": "d", "label": "ドライバー", "icon": "tabler:truck"}, {"id": "s", "label": "配送システム", "icon": "tabler:server"}, {"id": "u", "label": "利用者", "icon": "tabler:user"} ],
+      "messages": [
+        {"from": "d", "to": "s", "label": "不在を登録"},
+        {"from": "s", "to": "u", "label": "再配達の候補を通知"},
+        {"from": "u", "to": "s", "label": "宅配ボックスを選択"},
+        {"from": "s", "to": "s", "label": "ルートに再追加"},
+        {"from": "s", "to": "d", "label": "更新済みルート", "reply": true}
+      ] }
+    </script>
+  </div>
+  <aside class="notes">1 クリック 1 メッセージ。矢印の上を小さな光が走ります。</aside>
+</section>
+
+<!-- 12 ─ 比較スライダー -->
+<section class="slide L-free">
+  <div class="kicker">Before / After</div>
+  <h2 class="headline">再配達の申込み画面は、ここまで簡単になる</h2>
+  <div class="center grow">
+    <div class="ba-slider cmp-wrap" data-compare="50" data-stops="88,12" data-labels="現行,新画面">
+      <div data-density-skip>
+        <script type="application/json" data-mock="app">
+        { "device": "browser", "font": 20, "brand": "#6b7280", "width": 34, "sidebar": "light",
+          "url": "https://redelivery.example.com/form", "tab": "再配達受付",
+          "app": {"name": "再配達受付", "logo": "再"},
+          "nav": [ {"icon": "tabler:forms", "label": "申込み", "active": true}, {"icon": "tabler:help", "label": "ヘルプ"} ],
+          "title": "再配達のお申込み", "cols": 1, "anim": false,
+          "widgets": [ {"id": "f", "type": "form", "h": 20, "title": "必要事項を入力",
+             "fields": [ {"label": "お問い合わせ番号（12 桁）", "placeholder": "0000-0000-0000"}, {"label": "郵便番号", "placeholder": "000-0000"},
+                         {"label": "電話番号", "placeholder": "000-0000-0000"}, {"label": "希望日", "placeholder": "yyyy/mm/dd"} ], "button": "次へ（1/3）"} ] }
+        </script>
+      </div>
+      <div>
+        <script type="application/json" data-mock="app">
+        { "device": "browser", "font": 20, "brand": "#e0452b", "width": 34, "sidebar": "light",
+          "url": "https://redelivery.example.com/form", "tab": "再配達受付",
+          "app": {"name": "再配達受付", "logo": "再"},
+          "nav": [ {"icon": "tabler:forms", "label": "申込み", "active": true}, {"icon": "tabler:help", "label": "ヘルプ"} ],
+          "title": "受け取り方法を選ぶ", "cols": 2, "anim": false,
+          "widgets": [
+            {"id": "a", "type": "profile", "h": 10, "name": "宅配ボックス", "role": "今日 19 時までに", "lines": ["おすすめ"]},
+            {"id": "b", "type": "profile", "h": 10, "name": "置き配", "role": "玄関前", "lines": ["写真で完了報告"]},
+            {"id": "c", "type": "text", "span": 2, "h": 9.2, "body": "お問い合わせ番号は通知から自動で入力済み。選ぶだけで完了します。"} ] }
+        </script>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">スライダーは左右にドラッグできます。クリックで現行→新画面の順に見せます。</aside>
+</section>
+
+<!-- 13 ─ 日本地図 -->
+<section class="slide L-free">
+  <div class="kicker">Japan map</div>
+  <h2 class="headline">試行は <span data-annotate="underline">再配達の多い 6 都府県</span> から</h2>
+  <div class="center grow">
+    <script type="application/json" data-mock="japan">
+    { "font": 22, "tile": 2.7, "unit": "件",
+      "values": {"東京": 4210, "神奈川": 2410, "埼玉": 1830, "千葉": 1620, "大阪": 2630, "愛知": 1980, "福岡": 1560, "北海道": 820, "宮城": 640, "広島": 710, "京都": 900, "兵庫": 1300},
+      "highlight": ["東京", "神奈川", "埼玉", "千葉", "大阪", "福岡"],
+      "pins": [ {"pref": "福岡", "text": "拠点ハブ", "side": "bottom", "step": 1}, {"pref": "東京", "text": "最多 4,210 件", "side": "right", "step": 1} ],
+      "title": "都道府県別 再配達件数（9 月）" }
+    </script>
+  </div>
+  <aside class="notes">タイル地図は面積の差に引っ張られず、件数の比較に向きます。</aside>
+</section>
+
+<!-- 14 ─ 3D 地球儀 -->
+<section class="slide L-free">
+  <div class="kicker">3D · globe</div>
+  <div class="globe-wrap grow">
+    <div>
+      <h2 class="headline" data-anim="up">福岡ハブから、<br>アジア 4 都市へ</h2>
+      <p class="lede" data-anim="words" data-delay="500">越境 EC の翌日配送を 2027 年に開始</p>
+    </div>
+    <div class="globe" data-3d="globe" data-focus="30,125" data-distance="4.1"
+         data-points='[[33.59,130.40,"福岡"],[37.57,126.98,"ソウル"],[25.03,121.56,"台北"],[22.32,114.17,"香港"],[31.23,121.47,"上海"]]'
+         data-arcs='[[0,1],[0,2],[0,3],[0,4]]'></div>
+  </div>
+  <aside class="notes">three.js の地球儀。スライドが表示されている間だけ描画します。</aside>
+</section>
+
+<!-- 15 ─ 3D モデル + 手描き注釈 -->
+<section class="slide L-free">
+  <div class="kicker">3D · model</div>
+  <div class="row2 grow">
+    <div class="gem" data-3d="model" data-src="gem.glb" data-tint="accent"></div>
+    <div>
+      <h2 class="headline" data-anim="up">守るのは <span data-annotate="box" data-annotate-step>約束の時間</span></h2>
+      <p class="lede" data-anim="up">配送の価値は「速さ」より <span data-annotate="highlight" data-annotate-step>予定どおり</span> に届くこと</p>
+    </div>
+  </div>
+  <aside class="notes">モデルは .glb を data-src で指定（ビルド時に埋め込み）。注釈はクリックで描かれます。</aside>
+</section>
+
+<!-- 16 ─ クロージング: type -->
+<section class="slide L-closing">
+  <h2 class="hero" data-anim="type">次は、あなたの現場で。</h2>
+  <p class="lede" data-anim="fade" data-delay="1600">Slide Forge v1.7 — Expressive</p>
+  <aside class="notes">タイプライターで締めます。</aside>
+</section>

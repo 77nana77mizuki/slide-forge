@@ -349,6 +349,7 @@
   }
   function save() {
     const doc = new DOMParser().parseFromString(PRISTINE, "text/html");
+    if (window.__SF_PRISTINE_STAGE != null) doc.querySelector(".deck-stage").innerHTML = window.__SF_PRISTINE_STAGE;   // slides before slides-fx.js touched them
     const liveSlides = [...stage.querySelectorAll(":scope > section.slide")];
     const srcSlides = [...doc.querySelectorAll(".deck-stage > section.slide")];
     liveSlides.forEach((ls, i) => {
@@ -356,15 +357,17 @@
       a.forEach((el, k) => {
         if (!b[k]) return;
         const c = el.cloneNode(true);
-        c.querySelectorAll("span.ch").forEach((s) => s.replaceWith(s.textContent));
+        c.querySelectorAll("[data-rt]").forEach((n) => n.remove());
+        c.querySelectorAll("span.ch, span.sf-c, span.sf-w").forEach((s) => s.replaceWith(s.textContent));
         c.querySelectorAll("[contenteditable],[data-editable]").forEach((n) => { n.removeAttribute("contenteditable"); n.removeAttribute("data-editable"); });
         c.querySelectorAll("[style]").forEach((n) => {   // strip only what the runtime added; keep author styles
-          ["--delay", "--bar-delay", "--len", "--d", "stroke-dasharray", "stroke-dashoffset", "view-transition-name", "transition-delay"].forEach((k) => n.style.removeProperty(k));
+          ["--delay", "--bar-delay", "--len", "--d", "--k", "--n", "--line", "stroke-dasharray", "stroke-dashoffset", "view-transition-name", "transition-delay"].forEach((k) => n.style.removeProperty(k));
           if (n.hasAttribute("data-fit")) n.style.removeProperty("font-size");
           if (!n.getAttribute("style").trim()) n.removeAttribute("style");
         });
         c.querySelectorAll("[class]").forEach((n) => {
           n.classList.remove("is-in", "is-past", "is-played", "is-active", "sf-instant");
+          [...n.classList].filter((k) => k.startsWith("sf-annotated")).forEach((k) => n.classList.remove(k));
           if (!n.classList.length) n.removeAttribute("class");
         });
         b[k].innerHTML = c.innerHTML;
@@ -507,6 +510,7 @@
     }
     try { await document.fonts.ready; } catch (e) {}
     fitText();
+    document.dispatchEvent(new CustomEvent("deck:layout"));      // fonts + fitted text settled: effects measure now (slides-fx.js)
     if (MODE !== "export") {
       const [i, s] = parseHash();
       slides.forEach((sl) => sl.classList.remove("is-active"));

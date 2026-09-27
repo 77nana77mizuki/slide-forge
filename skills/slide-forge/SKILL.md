@@ -1,6 +1,6 @@
 ---
 name: slide-forge
-description: Builds animated, single-file HTML presentation decks (16:9, keyboard/presenter/overview/PDF/video) with a story-first workflow — outline with claim headlines, visual theme previews, free-licence photo/illustration/icon sourcing with automatic credits, layout+motion components, and automated rendering QA (overflow, overlap, contrast incl. text on photos, density) plus screenshot review. Use when the user asks for slides, a presentation, a deck, a talk, a pitch, スライド, プレゼン資料, 発表資料, 登壇資料, HTMLスライド, or wants to convert notes/documents/PPTX into an animated web presentation, or to fix/improve an existing Slide Forge deck. Also makes short MP4s with Remotion × three.js from a storyboard — 3D globes, photos, and motion graphics (kinetic typography, stat rings, drawn steps, bar charts, Lottie, 20 transitions, light leaks) — use for 動画, 映像, モーショングラフィック, ティザー, オープニング映像, SNS 用動画.
+description: Builds animated, single-file HTML presentation decks (16:9, keyboard/presenter/overview/PDF/video) with a story-first workflow — outline with claim headlines, visual theme previews, free-licence photo/illustration/icon sourcing with automatic credits, layout+motion components, and automated rendering QA (overflow, overlap, contrast incl. text on photos, density) plus screenshot review. Use when the user asks for slides, a presentation, a deck, a talk, a pitch, スライド, プレゼン資料, 発表資料, 登壇資料, HTMLスライド, or wants to convert notes/documents/PPTX into an animated web presentation, or to fix/improve an existing Slide Forge deck. Draws annotated charts that morph between slides, Prezi-style zoom canvases, hand-drawn annotations, code that animates between versions, architecture/sequence diagrams with flowing data, bento grids, before/after sliders, Japan prefecture maps, kinetic text and three.js 3D (globe/model) inside slides. Also makes short MP4s with Remotion × three.js from a storyboard — 3D globes, photos, and motion graphics (kinetic typography, stat rings, drawn steps, bar charts, Lottie, 20 transitions, light leaks) — use for 動画, 映像, モーショングラフィック, ティザー, オープニング映像, SNS 用動画.
 ---
 
 # Slide Forge — 伝わるアニメーション付き HTML スライド
@@ -87,6 +87,7 @@ python3 $SF/scripts/outline.py scaffold outline.md -o deck.src.html   # 叩き�
 - `<aside class="notes">` に話す台詞
 - データベースの構造や、出力される Excel ファイルの見た目（新旧比較つき）を見せるなら `data-mock="er"` / `data-mock="sheet"` に JSON を書く（layouts.md §7、実例 `assets/examples/mock/`）。新旧の突き合わせと色分けは `diff` が自動で行う
 - Web アプリやスマホの画面イメージ（ブラウザの枠・メニュー・グラフや一覧のパネル）に、立場ごとの要望を引き出し線で重ねるなら `data-mock="app"`（layouts.md §8、実例 `assets/examples/mock/app.src.html`）
+- 表現を一段上げたいときは [references/expressive.md](references/expressive.md)（実例 `assets/examples/fx/fx.src.html`）: 結論を書き込んだグラフと並べ替えモーフ（`data-mock="chart"`）、全体→部分に寄るズームキャンバス（`L-zoom`）、手描きの丸・下線（`data-annotate`）、版ごとにトークンが滑るコード（`data-codemove`）、データの粒が流れる構成図／シーケンス図（`arch` / `seq`）、ベントー（`L-bento`）、前後比較スライダー（`.ba-slider`）、日本のタイル地図（`japan`）、キネティック文字（`mask` `words` `type` `scramble` `slam` `tracking`）、3D の地球儀・モデル（`data-3d`）。**1 スライド 1 種類**
 完全な実例: `assets/examples/sample.src.html`（全レイアウト・全モーション）。
 ```bash
 python3 $SF/scripts/build.py deck.src.html              # → deck.html（単一ファイル）。静的 lint も表示
@@ -138,6 +139,9 @@ python3 $SF/scripts/video.py render film --out <name>.mp4            # 本番（
 - 属性で足りない動き → Anime.js を最後の section の後ろに同梱し `deck:change` で再生（resources.md §5.4）。動く前の状態も破綻させない
 - 作業フォルダ → 絶対パスで作る（`~` はホームで、作業ディレクトリと違うことがある）
 - システムの画面・帳票・データ構造を見せたい → スクリーンショットの代わりに mock（`er` / `sheet` / `app`）で描く。文字が小さくなるなら 2 枚に分ける
+- 棒グラフ・折れ線を載せる → 手書き HTML より `data-mock="chart"`。**目標線・吹き出し・強調で結論をグラフに書き込む**。並べ替えは同じ id のグラフを 2 枚並べてモーフ
+- 全体像と細部を行き来する説明 → スライドを分けるより `L-zoom`。システムの流れ → `arch`（粒が流れる）。やりとりの順番 → `seq`
+- 新旧の画面・写真の比較 → `.ba-slider`（同じ大きさの 2 枚）。地域別の数字 → `japan`
 
 ## ファイル
 | パス | 内容 | 読むタイミング |
@@ -147,13 +151,15 @@ python3 $SF/scripts/video.py render film --out <name>.mp4            # 本番（
 | references/visuals.md | 画像を入れる判断・検索・選定・加工・配置・ライセンス | 4 |
 | references/layouts.md | レイアウト/部品カタログとスニペット | 5 |
 | references/motion.md | アニメーション語彙・原則・レシピ | 5 |
+| references/expressive.md | 注釈付きグラフ・モーフ・ズーム・手描き注釈・コードの変化・構成図・ベントー・比較スライダー・日本地図・キネティック文字・3D | 5（表現を強めたいとき） |
 | references/qa.md | 指摘コード→直し方、レビュールーブリック、納品チェック | 6 |
 | references/resources.md | 外部リソース 29 件の使い分け、OSS（MIT/CC0）を実際に組み込む手順、日本の素材サイトの規約 | 3・4・5 |
 | references/video.md | 動画: 手順・絶対ルール・storyboard 仕様・素材・トラブル | 動画 |
 | references/motion-graphics.md | 動きの原則・プリセット・文字効果・シーン型・遷移・検証 | 動画で動きを設計するとき |
 | assets/examples/sample.src.html | 16 枚の完全な実例 | 5 |
+| assets/examples/fx/fx.src.html | v1.7 の表現 10 種の実例（16 枚） | 5 |
 | assets/examples/outline.example.md | outline.md の実例 | 2 |
 | assets/runtime/ | ランタイム（build が自動で同梱。通常は触らない） | — |
 | assets/themes/*.css | 7 テーマ | 独自テーマ作成時 |
 | assets/video-template/ | 動画の雛形（Remotion プロジェクト・太陽系とモーションの storyboard 例） | 動画（video.py new が複製） |
-| scripts/ | outline / themes / assets / build / check / export / record / extract_pptx / fonts / video / mock | 実行する |
+| scripts/ | outline / themes / assets / build / check / export / record / extract_pptx / fonts / video / mock（er・sheet・app・chart・arch・seq・japan） | 実行する |

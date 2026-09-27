@@ -37,12 +37,16 @@ import assets as A  # noqa: E402
 import mock as MK  # noqa: E402
 
 LAYOUTS = {"L-credits", "L-title", "L-section", "L-statement", "L-bullets", "L-split", "L-cards", "L-stats", "L-compare",
-           "L-quote", "L-image", "L-closing", "L-chart", "L-timeline", "L-flow", "L-code", "L-table", "L-agenda", "L-free"}
+           "L-quote", "L-image", "L-closing", "L-chart", "L-timeline", "L-flow", "L-code", "L-table", "L-agenda", "L-free",
+           "L-bento", "L-zoom"}
 ANIMS = {"up", "down", "from-left", "from-right", "fade", "scale", "zoom", "pop", "blur", "wipe", "wipe-up",
-         "draw", "mark", "chars"}
+         "draw", "mark", "chars", "words", "mask", "type", "scramble", "slam", "tracking"}
+ANNOTATE = {"underline", "circle", "box", "highlight", "strike", "cross", "bracket"}
+THREE_D = {"globe", "model", "shape"}
+VENDOR = SKILL / "assets" / "vendor"
 TRANSITIONS = {"fade", "slide", "rise", "zoom", "wipe", "morph", "none"}
 MAX_INLINE_IMAGE = 8 * 1024 * 1024   # bytes; bigger files stay as links (keeps the HTML openable)
-NO_HEADLINE_OK = {"L-credits", "L-title", "L-image", "L-quote", "L-statement", "L-section", "L-closing", "L-free"}
+NO_HEADLINE_OK = {"L-credits", "L-title", "L-image", "L-quote", "L-statement", "L-section", "L-closing", "L-free", "L-zoom"}
 
 
 def theme_path(name: str, src_dir: Path) -> Path:
@@ -109,6 +113,7 @@ def inline_images(body: str, src_dir: Path, warn) -> str:
         uri = _data_uri(url, src_dir, warn)
         return f"{attr}={q}{uri}{q}" if uri else m.group(0)
     body = re.sub(r'(src|poster|href)=(["\'])([^"\']+\.(?:png|jpe?g|gif|webp|svg|avif|mp4|webm))\2', repl, body, flags=re.I)
+    body = re.sub(r'(data-src)=(["\'])([^"\']+\.(?:glb|gltf))\2', repl, body, flags=re.I)      # 3D models for data-3d="model"
     return inline_css_urls(body, src_dir, warn)
 
 
@@ -223,6 +228,12 @@ def lint(body: str, cfg: dict) -> tuple[list[str], list[str]]:
         for a in re.findall(r'data-(?:anim|stagger)="([^"]*)"', inner):
             if a and a not in ANIMS:
                 errs.append(f"slide {i}: unknown animation \"{a}\" ({', '.join(sorted(ANIMS))})")
+        for a in re.findall(r'data-annotate="([^"]*)"', inner):
+            if a not in ANNOTATE:
+                errs.append(f"slide {i}: unknown data-annotate \"{a}\" ({', '.join(sorted(ANNOTATE))})")
+        for a in re.findall(r'data-3d="([^"]*)"', inner):
+            if a not in THREE_D:
+                errs.append(f"slide {i}: unknown data-3d \"{a}\" ({', '.join(sorted(THREE_D))})")
         morphs = re.findall(r'data-morph="([^"]+)"', inner)
         dup = {m for m in morphs if morphs.count(m) > 1}
         if dup:
@@ -238,6 +249,7 @@ def lint(body: str, cfg: dict) -> tuple[list[str], list[str]]:
         if n_steps > 7:
             warns.append(f"slide {i}: {n_steps} build steps – more than ~6 clicks per slide tires the audience; split the slide")
         anims = len(re.findall(r"data-anim=", inner)) + len(re.findall(r"data-stagger=", inner)) * 3
+        anims -= len(re.findall(r'class="(?:jp-|dg-|ch-)[^"]*"[^>]*\bdata-anim=', inner))   # generated chart/diagram parts move as one
         if anims > 14:
             warns.append(f"slide {i}: {anims}+ animated elements – motion should guide the eye, not decorate everything")
         if re.search(r"<img(?![^>]*\balt=)", inner):
@@ -279,6 +291,9 @@ def build(src_path: Path, out: Path | None, theme: str | None, font_mode: str, i
     title = html.escape(cfg.get("title", src_path.stem))
     desc = html.escape(cfg.get("description", ""))
 
+    three_js = ""
+    if re.search(r'\bdata-3d="', body):          # three.js (~790 KB) only ships in decks that use it
+        three_js = f"<script>\n{(VENDOR / 'three-sf.min.js').read_text(encoding='utf-8')}\n</script>\n"
     page = f"""<!DOCTYPE html>
 <html lang="{html.escape(cfg.get('lang', 'ja'))}">
 <head>
@@ -308,6 +323,9 @@ def build(src_path: Path, out: Path | None, theme: str | None, font_mode: str, i
 </main>
 </div>
 <script>window.DECK_CONFIG = {json.dumps(runtime_cfg, ensure_ascii=False)};</script>
+{three_js}<script>
+{(RUNTIME / 'slides-fx.js').read_text(encoding='utf-8')}
+</script>
 <script>
 {(RUNTIME / 'slides.js').read_text(encoding='utf-8')}
 </script>

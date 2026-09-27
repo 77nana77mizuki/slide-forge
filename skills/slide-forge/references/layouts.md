@@ -13,6 +13,8 @@
 7. データベース図・表計算ソフトの画面イメージ（mock.py）
 8. Web アプリ・スマホの画面イメージ（mock.py の app）
 
+グラフ（chart）・構成図（arch/seq）・日本地図（japan）・ベントー（L-bento）・ズーム（L-zoom）・比較スライダー・3D は **references/expressive.md**。
+
 ---
 
 ## 1. 基本ルール

@@ -43,6 +43,8 @@ build.py → check.py → (エラーあり) 直す → build.py → check.py …
 | `js-error` | スクリプトエラー | デッキ CSS/HTML の書き間違い、`data-*` の値を確認 |
 | build の「mock …」 | data-mock の JSON が読めない・セル番地が画面の外・`to` の id が無い | JSON の書式、`data-src` のパス、`callouts.at`（列記号＋画面の行番号）、`notes`/`callouts` の `to`（パネルの `id`）を確認 |
 | `text-over-graphic`（mk-device / mk-sheet / mk-entity） | 画面イメージの枠に、出典や本文が重なっている | 画面を小さく（`width`・`h`・行数）するか、出典を短くする。画面の中の文字・注記・吹き出しは対象外 |
+| v1.7 の表現で出やすいもの | グラフ・図・地図の文字が小さい／ズームキャンバスの文字 | chart/arch/japan は `font` を 22 以上に（w/cell で大きさを調整）。ズームキャンバス内は寄ったときの大きさで設計すれば判定対象外。比較スライダーの 2 枚は重なっていて当然なので overlap 対象外。`unknown data-annotate / data-3d` は値の綴りを確認 |
+| 3D が「unavailable」 | WebGL が使えない（古い PC・リモート環境） | 中に代替 `<img>` を置く／本番機で確認。PDF は静止 1 コマ |
 | build の「N build steps」 | クリック数が多すぎ（同じ `data-step="n"` は 1 クリックとして数える） | 分割する。矢印とノードを同時に出すなら同じ番号を付ける |
 
 目視で見つかりやすく、自動では拾えない不具合（2026-09 のセッションで実際に出たもの）:
